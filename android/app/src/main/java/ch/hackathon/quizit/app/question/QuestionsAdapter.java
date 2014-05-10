@@ -21,7 +21,7 @@ public class QuestionsAdapter extends ArrayAdapter<String> {
 
 
     public QuestionsAdapter(Context context, Question[] questions) {
-        super(context, R.layout.row_layout_questions);
+        super(context, R.layout.row_layout_questions,extractQuestionText(questions));
         this.questions = questions;
         this.context = context;
 
@@ -48,8 +48,7 @@ public class QuestionsAdapter extends ArrayAdapter<String> {
 
         View rowView = inflater.inflate(
                 R.layout.row_layout_questions, parent, false);
-        Button upvote = (Button) rowView
-                .findViewById(R.id.button_upvote);
+        Button upvote = (Button) rowView.findViewById(R.id.button_upvote);
         Button downvote = (Button) rowView
                 .findViewById(R.id.button_downvote);
         TextView questionText = (TextView) rowView

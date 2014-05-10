@@ -8,8 +8,19 @@ GET     /                           controllers.Application.index
 #Json test
 GET	    /json                        controllers.Application.jsonTest
 POST    /json                        controllers.Application.jsonTest
-GET     /insert                     controllers.Application.addUser
-GET     /users                      controllers.Application.allUsers
+
+# Real actions
+GET     /groups                     controllers.Application.getListOfGroups
+GET     /questions                  controllers.Application.getListOfQuestions
+GET     /answers                    controllers.Application.getListOfAnswers
+
+POST    /question                   controllers.Application.insertNewQuestion
+POST    /answer                     controllers.Application.insertNewAnswer
+POST    /group                      controllers.Application.insertNewGroup
+
+GET     /quizz                      controllers.Application.generateQuizz
+
+GET     /tag                        controllers.Application.autoCompleteTag
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
