@@ -8,12 +8,16 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="ch.hackathon.quizit.app.question.QuestionsActivity">
 
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
     <TextView
         android:id = "@+id/group_name"
         android:layout_width="200dp"
         android:layout_weight="1"
         android:layout_height="wrap_content" />
-
 
 
     <Button
@@ -28,6 +32,8 @@
         android:layout_alignRight="@android:id/list"
         android:layout_alignEnd="@android:id/list"
         android:layout_toRightOf="@+id/group_name"/>
+
+    </LinearLayout>
     <!--Do not modify the list-->
 
     <ListView
@@ -39,8 +45,6 @@
         android:requiresFadingEdge="vertical"
         android:scrollbars="vertical"
         android:visibility="visible"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="false" />
+        android:layout_below="@+id/header"/>
 
 </RelativeLayout>

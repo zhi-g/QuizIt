@@ -20,7 +20,7 @@ public class QuestionsAdapter extends ArrayAdapter<String> {
 
 
     public QuestionsAdapter(Context context, Question[] questions) {
-        super(context, R.layout.row_layout_questions);
+        super(context, R.layout.row_layout_questions,extractQuestionText(questions));
         this.questions = questions;
         this.context = context;
 

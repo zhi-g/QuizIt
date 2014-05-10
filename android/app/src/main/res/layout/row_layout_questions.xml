@@ -18,7 +18,7 @@
 
     <Button
         android:id="@+id/button_upvote"
-        style="?android:attr/borderlessButtonStyle"
+        android:background="@android:color/transparent"
         android:layout_width="40dp"
         android:layout_height="match_parent"
         android:onClick="downvote"
@@ -28,11 +28,10 @@
 
     <Button
         android:id="@+id/button_downvote"
-        style="?android:attr/borderlessButtonStyle"
+        android:background="@android:color/transparent"
         android:layout_width="40dp"
         android:layout_height="match_parent"
         android:clickable="true"
         android:onClick="upvote"
-        android:background="@color/blue"
         />
 </LinearLayout>
