@@ -6,7 +6,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="ch.hackathon.quizit.app.QuestionsActivity">
+    tools:context="ch.hackathon.quizit.app.question.QuestionsActivity">
 
     <TextView
         android:id = "@+id/group_name"
