@@ -7,8 +7,9 @@ GET     /                           controllers.Application.index
 
 #Json test
 GET	    /json                        controllers.Application.jsonTest
-GET     /insert                     controllers.Application.insertDB
-GET     /get                        controllers.Application.getDB
+POST    /json                        controllers.Application.jsonTest
+GET     /insert                     controllers.Application.addUser
+GET     /users                      controllers.Application.allUsers
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
