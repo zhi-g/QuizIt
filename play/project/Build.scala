@@ -4,15 +4,12 @@ import PlayProject._
 
 object ApplicationBuild extends Build {
 
-    val appName         = "QuizzIt"
-    val appVersion      = "1.0-SNAPSHOT"
+    val appName = "QuizzIt"
+    val appVersion = "1.0-SNAPSHOT"
 
-    val appDependencies = Seq(
-      // Add your project dependencies here,
-    )
+    val appDependencies = Seq()
 
-    val main = PlayProject(appName, appVersion, appDependencies, mainLang = SCALA).settings(
-      // Add your own project settings here      
+    val main = PlayProject(appName, appVersion, appDependencies, mainLang = SCALA).settings( // Add your own project settings here      
     )
 
 }
