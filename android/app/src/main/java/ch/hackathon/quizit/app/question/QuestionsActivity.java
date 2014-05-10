@@ -11,6 +11,9 @@ import android.widget.TextView;
 import android.widget.ListView;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.TreeSet;
+
 import ch.hackathon.quizit.app.R;
 
 
@@ -24,10 +27,12 @@ public class QuestionsActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_questions);
-
         groupName = getIntent().getStringExtra("Group name");
         ((TextView)findViewById(R.id.group_name)).setText(groupName);
-        showQuestions();
+
+        Question[] questions = new Question[] {new Question("Couihgjbv", new ArrayList<String>(),new TreeSet<String>(),0,0,"",""),new Question("dfh", new ArrayList<String>(),new TreeSet<String>(),0,0,"",""),new Question("Couidjfhvrghgjbv", new ArrayList<String>(),new TreeSet<String>(),0,0,"","")};
+        ArrayAdapter<String> mAdapter = new QuestionsAdapter(this, questions);
+        setListAdapter(mAdapter);
 
     }
 
@@ -65,9 +70,10 @@ public class QuestionsActivity extends ListActivity {
 
     private void showQuestions() {
 
-        ArrayAdapter<String> mAdapter;
     }
-    private class GetQuestionsTask extends AsyncTask<Void, Void, String[]> {
+
+
+    private  class GetQuestionsTask extends AsyncTask<Void, Void, String[]> {
 
         @Override
         protected String[] doInBackground(Void ...unused){

@@ -2,5 +2,7 @@
 .gradle
 local.properties
 .idea/*
+android/.idea/*
+android/app/app.iml
 .metadata/*
 .DS_Store
