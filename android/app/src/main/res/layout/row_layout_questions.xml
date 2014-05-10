@@ -33,5 +33,6 @@
         android:layout_height="match_parent"
         android:clickable="true"
         android:onClick="upvote"
+        android:background="@color/blue"
         />
 </LinearLayout>

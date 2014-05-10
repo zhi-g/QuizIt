@@ -10,31 +10,37 @@
 
     <TextView
         android:id = "@+id/group_name"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
+        android:layout_weight="1"
         android:layout_height="wrap_content" />
-    
+
+
+
     <Button
         android:id="@+id/button_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
+        android:layout_weight="1"
         android:enabled="false"
         android:onClick="addButtonClicked"
         android:text="@string/button_add"
         android:layout_alignTop="@android:id/list"
         android:layout_alignRight="@android:id/list"
-        android:layout_alignEnd="@android:id/list" />
-
+        android:layout_alignEnd="@android:id/list"
+        android:layout_toRightOf="@+id/group_name"/>
     <!--Do not modify the list-->
 
     <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:overScrollMode="never"
         android:requiresFadingEdge="vertical"
-        android:scrollbars="vertical" />
+        android:scrollbars="vertical"
+        android:visibility="visible"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="false" />
 
 </RelativeLayout>
