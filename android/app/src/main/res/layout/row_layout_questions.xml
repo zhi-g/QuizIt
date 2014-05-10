@@ -9,20 +9,21 @@
         android:id="@+id/question_text"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_weight="0.91"
         android:maxLines="3"
         android:scrollbars="vertical"
         android:maxLength="500"
         android:clickable="true"
         android:onClick="showQuestion"/>
 
-    <Button
+    <ImageButton
         android:id="@+id/button_upvote"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="40dp"
         android:layout_height="match_parent"
-        android:onClick="downvote"
-        android:clickable="true" />
+        android:clickable="true"
+        android:src="@drawable/down"
+        />
 
 
 
@@ -32,7 +33,6 @@
         android:layout_width="40dp"
         android:layout_height="match_parent"
         android:clickable="true"
-        android:onClick="upvote"
-        android:background="@color/blue"
+        android:src="@drawable/up"
         />
 </LinearLayout>

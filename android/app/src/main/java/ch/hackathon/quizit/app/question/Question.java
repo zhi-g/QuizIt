@@ -56,6 +56,15 @@ public class Question implements Parcelable {
         return groupId;
     }
 
+    public void upvote(){
+        upvote--;
+    }
+
+    public void downvote(){
+        downvote--;
+    }
+
+
 	/* Parcelable implementation */
 
     public Question(Parcel in) {

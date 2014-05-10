@@ -1,6 +1,7 @@
 package ch.hackathon.quizit.app.question;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +55,10 @@ public class QuestionsAdapter extends ArrayAdapter<String> {
         TextView questionText = (TextView) rowView
                 .findViewById(R.id.question_text);
 
-        upvote.setText("A");
+        //TODO add upvote and downvote icons
+
+        upvote.setOnClickListener(new UpvoteButtonListener(position));
+        downvote.setOnClickListener(new DownvoteButtonListener(position));
 
        questionText.setText(questions[position].getQuestionText());
 
@@ -62,31 +66,43 @@ public class QuestionsAdapter extends ArrayAdapter<String> {
     }
 
 
- private class UpvoteButtonListener implements  View.OnClickListener {
+    private class UpvoteButtonListener implements  View.OnClickListener {
      private int position;
-     private QuestionsAdapter adapter;
 
-     public UpvoteButtonListener(int position,QuestionsAdapter adapter) {
-         this.position = position;
-         this.adapter = adapter;
-     }
-     @Override
-     public void onClick(View view) {
+         public UpvoteButtonListener(int position) {
+             this.position = position;
+         }
 
-     }
+         @Override
+         public void onClick(View view) {
+            questions[position].upvote();
 
+         }
+      }
      private class DownvoteButtonListener implements  View.OnClickListener {
          private int position;
-         private QuestionsAdapter adapter;
 
-         public DownvoteButtonListener(int position,QuestionsAdapter adapter) {
+         public DownvoteButtonListener(int position) {
              this.position = position;
-             this.adapter = adapter;
          }
          @Override
          public void onClick(View view) {
-
+                questions[position].downvote();
          }
-     }
+    }
+
+    private class QuestionTextListener implements View.OnClickListener {
+        private int position;
+
+        public QuestionTextListener(int position) {
+            this.position = position;
+        }
+        @Override
+        public void onClick(View view) {
+            Intent myIntent = new Intent(context, ShowQuestion.class);
+             myIntent.putExtra("question", questions[position]);
+            context.startActivity(myIntent);
+        }
+    }
  }
-}
+
