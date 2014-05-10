@@ -65,7 +65,7 @@ public class QuestionsActivity extends ListActivity {
 
     private void showQuestions() {
 
-        ArrayAdapter<String> mAdapter;
+        ArrayAdapter<String> mAdapter = new QuestionsAdapter(this, new String[]{"bla", "plop", "Coucou"});
     }
     private class GetQuestionsTask extends AsyncTask<Void, Void, String[]> {
 
