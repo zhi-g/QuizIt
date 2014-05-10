@@ -10,12 +10,11 @@ import play.api.Play.current
 import anorm._
 import anorm.SqlParser._
 
+case class User(uid: Pk[Long] = NotAssigned, name: String, login_token: String) {
+    def json = toJson(Map("name" -> toJson(name), "login_token" -> toJson(login_token)))
+}
+
 object QuizzModel {
-
-    case class User(uid: Pk[Long] = NotAssigned, name: String, login_token: String) {
-        def json = toJson(Seq(toJson(name), toJson(login_token)))
-    }
-
     val simpleUser = {
         get[Pk[Long]]("users.uid") ~
             get[String]("users.name") ~
@@ -60,6 +59,16 @@ object QuizzModel {
                 """).on(
                 'name -> user.name,
                 'login_token -> user.login_token).executeUpdate() == 1
+    }
+
+    /**
+     * @brief Get all groups a user belongs to
+     */
+    def groupsFor(user: User) = DB.withConnection {
+        implicit conn =>
+            SQL("SELECT * FROM users WHERE name = { name }")
+                .on('name -> user.name)
+                .as(simpleUser *)
     }
 
 }
