@@ -11,6 +11,14 @@ import android.widget.TextView;
 import android.widget.ListView;
 import android.view.View;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
@@ -18,6 +26,8 @@ import ch.hackathon.quizit.app.R;
 
 
 public class QuestionsActivity extends ListActivity {
+    public static final String SERVER_URL = "http://128.179.161.172:9000/";
+
     private String groupName = "Unknown";
     private Question[] questions;
 
@@ -80,6 +90,16 @@ public class QuestionsActivity extends ListActivity {
 
         @Override
         protected Question[] doInBackground(Void ...unused){
+            HttpClient httpClient = new DefaultHttpClient();
+            try {
+                HttpResponse response = httpClient.execute(new HttpGet(SERVER_URL));
+                StatusLine statusLine = response.getStatusLine();
+                if(statusLine.getStatusCode() == HttpStatus.SC_OK) {
+                    
+                }
+            }catch (IOException e) {
+
+            }
 
             return null;
         }

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import ch.hackathon.quizit.app.R;
@@ -48,8 +49,8 @@ public class QuestionsAdapter extends ArrayAdapter<String> {
 
         View rowView = inflater.inflate(
                 R.layout.row_layout_questions, parent, false);
-        Button upvote = (Button) rowView.findViewById(R.id.button_upvote);
-        Button downvote = (Button) rowView
+        ImageButton upvote = (ImageButton) rowView.findViewById(R.id.button_upvote);
+        ImageButton downvote = (ImageButton) rowView
                 .findViewById(R.id.button_downvote);
         TextView questionText = (TextView) rowView
                 .findViewById(R.id.question_text);

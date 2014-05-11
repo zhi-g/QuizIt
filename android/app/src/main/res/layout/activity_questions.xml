@@ -25,7 +25,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:enabled="false"
         android:onClick="addButtonClicked"
         android:text="@string/button_add"
         android:layout_alignTop="@android:id/list"
