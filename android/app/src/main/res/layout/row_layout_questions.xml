@@ -35,6 +35,5 @@
         android:layout_height="match_parent"
         android:clickable="true"
         android:drawableTop="@drawable/down"
-
         />
 </LinearLayout>

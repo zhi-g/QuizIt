@@ -40,6 +40,7 @@ public class QuestionsActivity extends ListActivity {
 
     private String groupName = "Unknown";
     private List<Question> questions;
+    private long groupId;
 
 
 
@@ -49,8 +50,9 @@ public class QuestionsActivity extends ListActivity {
         setContentView(R.layout.activity_questions);
         groupName = getIntent().getStringExtra("Group name");
         ((TextView)findViewById(R.id.group_name)).setText(groupName);
+        groupId = getIntent().getLongExtra("id", 0);
 
-        new GetQuestionsTask().execute();
+        new GetQuestionsTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
       questions = new ArrayList<Question>();
         questions.add(new Question(845,"Couihgjbv",2, new ArrayList<Answer>(),765,0, 0,new TreeSet<String>()));
@@ -92,7 +94,9 @@ public class QuestionsActivity extends ListActivity {
     }
 
     public void addButtonClicked(View view){
-
+           Intent mIntent = new Intent(this, AddQuestionActivity.class);
+           mIntent.putExtra("groupId", groupId);
+           startActivity(mIntent);
      }
 
     private void showQuestions(List<Question> questions) {
@@ -114,7 +118,7 @@ public class QuestionsActivity extends ListActivity {
             HttpPost httpRequest = new HttpPost(SERVER_URL);
             try {
                 httpResponse = httpClient.execute(httpRequest);
-                String requestBody = new JSONBuilder().putToken("bla").putGroupID(8497).build();
+                String requestBody = new JSONBuilder().putToken("token").putGroupID(groupId).build();
                 httpRequest.setEntity(new StringEntity(requestBody));
                 StatusLine statusLine = httpResponse.getStatusLine();
                 if(statusLine.getStatusCode() == HttpStatus.SC_OK) {
