@@ -287,6 +287,41 @@ object QuizzModel {
         }
 
     /**
+     * @brief Adds a user to a group
+     * 
+     * @return true on success
+     */
+    def addToGroup(user: User, gid: Long) = DB.withConnection {
+        implicit connection =>
+            SQL("""
+                    INSERT INTO user_group
+                    (uid, gid)
+                    VALUES ( {uid}, {gid} );
+                """)
+                .on(
+                    'uid -> user.uid,
+                    'gid -> gid)
+                .execute
+    }
+    
+    /**
+     * @brief Removes a user from a group
+     * 
+     * @return true on success
+     */
+    def removeFromGroup(user: User, gid: Long) = DB.withConnection {
+        implicit connection =>
+            SQL("""
+                    DELETE FROM user_group
+                    WHERE uid = {uid} and gid = {gid};
+                """)
+                .on(
+                    'uid -> user.uid,
+                    'gid -> gid)
+                .execute
+    }
+
+    /**
      * @brief Lookup a user by name
      *
      * @return Some(user) if user with that name exists or None

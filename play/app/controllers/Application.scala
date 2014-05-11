@@ -225,7 +225,24 @@ object Application extends Controller {
      *
      * @error { error : text }
      */
-    def subscribeToGroup = ???
+    def subscribeToGroup = Action {
+        implicit request =>
+            val result = for (
+                json <- request.body.asJson.orElse(request.body.asText.map(Json.parse));
+                token <- (json \ "token").asOpt[String];
+                gid <- (json \ "gid").asOpt[Long];
+                user <- authenticateUser(token)
+            ) yield {
+                if (addToGroup(user, gid))
+                    Ok(toJson(Map("success" -> true)))
+                else
+                    jsonError("Not able to suscribe user to group")
+            }
+
+            print(request)
+            println(request.body)
+            result.getOrElse(jsonError("Something went wrong"))
+    }
 
     /**
      * @brief Removes a user from a group
@@ -236,7 +253,24 @@ object Application extends Controller {
      *
      * @error { error : text }
      */
-    def unsubscribeFromGroup = ???
+    def unsubscribeFromGroup = Action {
+        implicit request =>
+            val result = for (
+                json <- request.body.asJson.orElse(request.body.asText.map(Json.parse));
+                token <- (json \ "token").asOpt[String];
+                gid <- (json \ "gid").asOpt[Long];
+                user <- authenticateUser(token)
+            ) yield {
+                if (removeFromGroup(user, gid))
+                    Ok(toJson(Map("success" -> true)))
+                else
+                    jsonError("Not able to suscribe user to group")
+            }
+
+            print(request)
+            println(request.body)
+            result.getOrElse(jsonError("Something went wrong"))
+    }
 
     def index = Action {
         Ok(views.html.index("Your new application is ready."))
