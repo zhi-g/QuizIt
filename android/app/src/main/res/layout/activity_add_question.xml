@@ -20,4 +20,5 @@
         android:maxLines="1"
         android:layout_below="@+id/edit_text_question"/>
 
+
 </RelativeLayout>

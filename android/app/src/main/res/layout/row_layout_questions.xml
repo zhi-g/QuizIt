@@ -23,7 +23,6 @@
         android:layout_width="40dp"
         android:layout_height="match_parent"
         android:clickable="true"
-        android:text = ""
         android:drawableTop="@drawable/up"
         />
 
@@ -35,7 +34,6 @@
         android:layout_width="40dp"
         android:layout_height="match_parent"
         android:clickable="true"
-        android:text = ""
         android:drawableTop="@drawable/down"
         />
 </LinearLayout>

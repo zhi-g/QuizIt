@@ -6,21 +6,21 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:background="@color/silver"
     tools:context="ch.hackathon.quizit.app.MainActivity">
 
     <LinearLayout
         android:id="@+id/linear_layout_main_top"
         android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
     <Button
         android:id="@+id/join_group_button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/group_activity_margin"
         android:layout_marginRight="@dimen/group_activity_margin"
+        android:layout_weight="1"
         android:textSize="@dimen/group_button_text_size"
         android:onClick="joinGroup"
         android:background="@drawable/group__list_element"
@@ -28,10 +28,11 @@
 
     <Button
         android:id="@+id/find_groups_button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/group_activity_margin"
         android:layout_marginLeft="@dimen/group_activity_margin"
+        android:layout_weight="1"
         android:textSize="@dimen/group_button_text_size"
         android:onClick="searchGroup"
         android:background="@drawable/group__list_element"
@@ -41,7 +42,7 @@
 
     <Button
         android:id="@+id/create_new_group_button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/group_activity_margin"
@@ -63,7 +64,7 @@
 
     <Button
         android:id="@+id/most_recent_group_button_1"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/group_activity_margin"
         android:textSize="@dimen/group_button_text_size"
@@ -74,7 +75,7 @@
 
     <Button
         android:id="@+id/most_recent_group_button_2"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/group_activity_margin"
         android:textSize="@dimen/group_button_text_size"
@@ -85,7 +86,7 @@
 
     <Button
         android:id="@+id/most_recent_group_button_3"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/group_activity_margin"
         android:textSize="@dimen/group_button_text_size"
