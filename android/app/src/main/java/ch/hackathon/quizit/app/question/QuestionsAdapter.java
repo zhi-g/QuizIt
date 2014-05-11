@@ -2,6 +2,7 @@ package ch.hackathon.quizit.app.question;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import ch.hackathon.quizit.app.R;
  * Created by studio on 10.05.2014.
  */
 public class QuestionsAdapter extends ArrayAdapter<String> {
+    private static final String TAG = QuestionsAdapter.class.getCanonicalName();
     List<Question> questions;
     Context  context;
 
@@ -51,6 +53,7 @@ public class QuestionsAdapter extends ArrayAdapter<String> {
 
         View rowView = inflater.inflate(
                 R.layout.row_layout_questions, parent, false);
+
         Button upvote = (Button) rowView.findViewById(R.id.button_upvote);
         Button downvote = (Button) rowView
                 .findViewById(R.id.button_downvote);
