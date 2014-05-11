@@ -108,7 +108,9 @@ object Application extends Controller {
             val gid = newGroup(Group(name = groupname))
             Ok(toJson(Map("gid" -> gid)))
         } catch {
-            case e: Throwable => jsonError(e.getMessage())
+            case e: Throwable =>
+                e.printStackTrace()
+                jsonError(e.getMessage())
         }
 
         println(request.body)
@@ -125,18 +127,67 @@ object Application extends Controller {
      *
      * @error { error : text }
      */
-    def insertNewQuestion = ???
+    def insertNewQuestion = Action { implicit request =>
+        val result = for (
+            json <- request.body.asJson;
+            token <- (json \ "token").asOpt[String];
+            gid <- (json \ "gid").asOpt[Int];
+            text <- (json \ "text").asOpt[String];
+            tags <- Some((json \ "tags" \\ "tag").flatMap(_.asOpt[String]));
+            user <- authenticateUser(token)
+        ) yield try {
+            if (tags isEmpty) {
+                jsonError("List of tags should not be empty !")
+            } else {
+                val question = Question(text = text, gid = gid, owner = user.uid.get)
+                val qid: Long = newQuestion(question, tags.map(Tag.apply))
+                Ok(toJson(Map("qid" -> qid)))
+            }
+        } catch {
+            case e: Throwable =>
+                e.printStackTrace()
+                jsonError(e.getMessage())
+        }
+
+        println(request.body)
+        println(result)
+        result.getOrElse(jsonError("Something went wrong"))
+    }
 
     /**
      * @brief Insert new answer for a question
      *
-     * @input { token : text , qid : int , text : text }
+     * @input { token : text , qid : int , text : text, iscorrect }
      *
      * @output { aid : int }
      *
      * @error { error : text }
      */
-    def insertNewAnswer = ???
+    def insertNewAnswer = Action { implicit request =>
+        val result = for (
+            json <- request.body.asJson;
+            token <- (json \ "token").asOpt[String];
+            qid <- (json \ "qid").asOpt[Int];
+            text <- (json \ "text").asOpt[String];
+            iscorrect <- (json \ "iscorrect").asOpt[Boolean];
+            user <- authenticateUser(token)
+        ) yield try {
+            val answer = Answer(text = text, qid = qid,
+                owner = user.uid.get, iscorrect = iscorrect)
+
+            val aid: Long = newAnswer(answer)
+            Ok(toJson(Map("aid" -> aid)))
+
+        } catch {
+            case e: Throwable =>
+                e.printStackTrace()
+                jsonError(e.getMessage())
+        }
+
+        println(request.body)
+        println(result)
+        result.getOrElse(jsonError("Something went wrong"))
+    }
 
     /**
      * @brief Generate a quizz based on a certain tag
@@ -165,7 +216,7 @@ object Application extends Controller {
      */
     def autoCompleteTag = ???
 
-     /**
+    /**
      * @brief Adds a user into a group
      *
      * @input { token : text , gid : int}
@@ -175,7 +226,7 @@ object Application extends Controller {
      * @error { error : text }
      */
     def subscribeToGroup = ???
-    
+
     /**
      * @brief Removes a user from a group
      *
@@ -186,7 +237,7 @@ object Application extends Controller {
      * @error { error : text }
      */
     def unsubscribeFromGroup = ???
-    
+
     def index = Action {
         Ok(views.html.index("Your new application is ready."))
     }
@@ -225,9 +276,12 @@ object Application extends Controller {
      *  Returns a json array of all the users in the database
      */
     def allUsers = Action {
-        Ok(toJson(Map(
+        Ok(Json.stringify(toJson(Map(
             "users" -> toJson(users.map(_.json)),
-            "groups" -> toJson(groups.map(_.json)))))
+            "groups" -> toJson(groups.map(_.json)),
+            "questions" -> toJson(questions.map(_.json)),
+            "answers" -> toJson(answers.map(_.json)),
+            "tags" -> toJson(tags.map(_.json))))))
     }
 
 }
