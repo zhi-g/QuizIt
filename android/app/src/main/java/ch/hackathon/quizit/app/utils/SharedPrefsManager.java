@@ -15,29 +15,21 @@ public class SharedPrefsManager {
         mContext = context;
     }
 
-    public void setNewLast(int view) {
+    public void setNewFirst(String name) {
         SharedPreferences sharedPrefs = mContext.getSharedPreferences(APP_SHARED_PREFS, mContext.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
 
         String oldFirst = sharedPrefs.getString(GROUP_ACCESS + 0, "Group" + 0);
         String oldSecond = sharedPrefs.getString(GROUP_ACCESS + 1, "Group" + 1);
-        String oldThird = sharedPrefs.getString(GROUP_ACCESS + 2, "Group" + 2);
 
-        if(view == 0) {
-            return;
-        }
+        editor.putString(GROUP_ACCESS + 0, name);
 
-        if(view == 1) {
-            editor.putString(GROUP_ACCESS + 0, oldSecond);
-        } else if(view == 2) {
-            editor.putString(GROUP_ACCESS + 0, oldThird);
+        if(oldSecond.equals(name)) {
+            editor.putString(GROUP_ACCESS + 1, oldFirst);
+        } else {
+            editor.putString(GROUP_ACCESS + 1, oldFirst);
             editor.putString(GROUP_ACCESS + 2, oldSecond);
         }
-        editor.putString(GROUP_ACCESS + 1, oldFirst);
         editor.commit();
-    }
-
-    public void setNewFirst(String name) {
-
     }
 }

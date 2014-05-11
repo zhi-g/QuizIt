@@ -24,7 +24,7 @@ import ch.hackathon.quizit.app.utils.JSONParser;
  */
 public class FetchGroupsAsyncTask extends AsyncTask<Void, Void, Void> {
     private final static String TAG = FetchGroupsAsyncTask.class.getCanonicalName();
-    private final static String URL = "http://128.179.161.172";
+    private final static String URL = "http://128.179.167.151";
     private final static int PORT = 9000;
     private final static String REQUEST = "json";
     private AsyncTaskListener mListener;

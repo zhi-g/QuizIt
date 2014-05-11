@@ -116,7 +116,7 @@ public class MainActivity extends ActionBarActivity implements FetchGroupsAsyncT
     }
 
     public void mostRecentGroup2(View view) {
-        new SharedPrefsManager(this).setNewLast(1);
+        new SharedPrefsManager(this).setNewFirst(mGroupButton2.getText().toString());
 
         String groupName = mGroupButton2.getText().toString();
         Intent newIntent = new Intent(this, QuestionsActivity.class);
@@ -125,7 +125,7 @@ public class MainActivity extends ActionBarActivity implements FetchGroupsAsyncT
     }
 
     public void mostRecentGroup3(View view) {
-        new SharedPrefsManager(this).setNewLast(2);
+        new SharedPrefsManager(this).setNewFirst(mGroupButton3.getText().toString());
 
         String groupName = mGroupButton3.getText().toString();
         Intent newIntent = new Intent(this, QuestionsActivity.class);
