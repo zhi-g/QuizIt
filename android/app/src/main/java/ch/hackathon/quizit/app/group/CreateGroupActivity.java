@@ -31,6 +31,7 @@ import ch.hackathon.quizit.app.utils.JSONParser;
 import ch.hackathon.quizit.app.question.QuestionsActivity;
 
 public class CreateGroupActivity extends ActionBarActivity {
+    private static final String TAG = CreateGroupActivity.class.getCanonicalName();
     private final static String REQUEST = "http://128.179.161.172:9000/group";
     private EditText mNewGroupTextView;
     private Group mGroup;
@@ -71,6 +72,7 @@ public class CreateGroupActivity extends ActionBarActivity {
             @Override
             public void onClick(DialogInterface dialog, int id) {
                 Intent newIntent = new Intent(CreateGroupActivity.this, QuestionsActivity.class);
+                newIntent.putExtra("Group name", mNewGroupTextView.getText().toString());
                 startActivity(newIntent);
             }
         });
@@ -91,25 +93,22 @@ public class CreateGroupActivity extends ActionBarActivity {
     }
 
     private class CreateGroupAsyncTask extends AsyncTask<Void, Void, Void> {
+        String groupName = mNewGroupTextView.getText().toString();
+        HttpResponse response;
+        StatusLine statusLine;
 
         @Override
         protected Void doInBackground(Void... params) {
-            String groupName = mNewGroupTextView.getText().toString();
             HttpClient httpclient = new DefaultHttpClient();
-            HttpResponse response;
-            String responseString = null;
             try {
                 HttpPost request = new HttpPost(REQUEST);
                 JSONBuilder builder =  new JSONBuilder();
+                request.addHeader("Content-type", "application/json");
 
                 StringEntity entity = new StringEntity(builder.putToken("token").putName(groupName).build());
                 request.setEntity(entity);
                 response = httpclient.execute(request);
-                StatusLine statusLine = response.getStatusLine();
-                if(statusLine.getStatusCode() == HttpStatus.SC_OK) {
-                    String stringResponse = EntityUtils.toString(response.getEntity());
-                    mGroup = new Group(JSONParser.getGroupID(stringResponse), groupName);
-                }
+                statusLine = response.getStatusLine();
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (JSONException e) {
@@ -120,10 +119,24 @@ public class CreateGroupActivity extends ActionBarActivity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            Intent newIntent = new Intent(CreateGroupActivity.this, QuestionsActivity.class);
-            newIntent.putExtra("Group name", mGroup.getName());
-            startActivity(newIntent);
-            //displayDialog();
+            if(statusLine.getStatusCode() == HttpStatus.SC_OK) {
+                String stringResponse = null;
+                try {
+                    stringResponse = EntityUtils.toString(response.getEntity());
+                    mGroup = new Group(JSONParser.getGroupID(stringResponse), groupName);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else if(statusLine.getStatusCode() == HttpStatus.SC_BAD_REQUEST){
+                displayDialog();
+            }
+            if(mGroup != null) {
+                Intent newIntent = new Intent(CreateGroupActivity.this, QuestionsActivity.class);
+                newIntent.putExtra("Group name", mGroup.getName());
+                startActivity(newIntent);
+            }
         }
     }
 }

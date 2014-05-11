@@ -47,10 +47,13 @@ public class FetchGroupsAsyncTask extends AsyncTask<Void, Void, Void> {
         try {
             HttpPost request = new HttpPost(URL + ":" + PORT + "/" + REQUEST);
             JSONBuilder builder =  new JSONBuilder();
+            request.addHeader("Content-type", "application/json");
 
-            StringEntity entity = new StringEntity(builder.putToken("token").build());
+            String json = builder.putToken("token").build();
+            StringEntity entity = new StringEntity(json);
             request.setEntity(entity);
             response = httpclient.execute(request);
+            Log.d(TAG, "Request: " + json);
             StatusLine statusLine = response.getStatusLine();
             if(statusLine.getStatusCode() == HttpStatus.SC_OK) {
                 String stringResponse = EntityUtils.toString(response.getEntity());
