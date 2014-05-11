@@ -45,4 +45,4 @@ gradle/
 .settings/
 
 # facebook build files
-/app/libs/facebook/build
+/libs/facebook/build
