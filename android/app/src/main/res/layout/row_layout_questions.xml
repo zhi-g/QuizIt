@@ -14,26 +14,27 @@
         android:scrollbars="vertical"
         android:maxLength="500"
         android:clickable="true"
-        android:onClick="showQuestion"/>
+        android:background="@drawable/group__list_element"
+        />
 
-    <ImageButton
+    <Button
         android:id="@+id/button_upvote"
         android:background="@android:color/transparent"
         android:layout_width="40dp"
         android:layout_height="match_parent"
         android:clickable="true"
-        android:src="@drawable/up"
+        android:drawableTop="@drawable/up"
         />
 
 
 
-    <ImageButton
+    <Button
         android:id="@+id/button_downvote"
         android:background="@android:color/transparent"
         android:layout_width="40dp"
         android:layout_height="match_parent"
         android:clickable="true"
-        android:src="@drawable/down"
+        android:drawableTop="@drawable/down"
 
         />
 </LinearLayout>

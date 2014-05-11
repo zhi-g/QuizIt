@@ -1,4 +1,4 @@
-package ch.hackathon.quizit.app.Utils;
+package ch.hackathon.quizit.app.utils;
 
 import org.json.JSONException;
 import org.json.JSONObject;

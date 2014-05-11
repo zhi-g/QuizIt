@@ -2,18 +2,30 @@ package ch.hackathon.quizit.app.question;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import java.util.List;
 
 import ch.hackathon.quizit.app.R;
 
 
 public class ShowQuestion extends ActionBarActivity {
-
+   private TextView text;
+    private LinearLayout tags;
+    private List<Answer> answers;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_question);
+
+        text = (TextView) findViewById(R.id.text_question);
+        tags = (LinearLayout) findViewById(R.id.list_tags);
+
+        text.setMovementMethod(new ScrollingMovementMethod());
     }
 
 

@@ -16,8 +16,8 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.util.List;
 
-import ch.hackathon.quizit.app.Utils.JSONBuilder;
-import ch.hackathon.quizit.app.Utils.JSONParser;
+import ch.hackathon.quizit.app.utils.JSONBuilder;
+import ch.hackathon.quizit.app.utils.JSONParser;
 
 /**
  * Created by mathieu on 11/05/14.
@@ -48,7 +48,7 @@ public class FetchGroupsAsyncTask extends AsyncTask<Void, Void, Void> {
             HttpPost request = new HttpPost(URL + ":" + PORT + "/" + REQUEST);
             JSONBuilder builder =  new JSONBuilder();
 
-            StringEntity entity = new StringEntity(builder.putGroupID(1).putName("Group1").build());
+            StringEntity entity = new StringEntity(builder.putToken("token").build());
             request.setEntity(entity);
             response = httpclient.execute(request);
             StatusLine statusLine = response.getStatusLine();

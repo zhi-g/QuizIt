@@ -1,6 +1,4 @@
-package ch.hackathon.quizit.app.Utils;
-
-import android.app.AlertDialog;
+package ch.hackathon.quizit.app.utils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,6 +46,7 @@ public class JSONParser {
             long owner = json.getLong("owner");
             int upVote = json.getInt("upvote");
             int downVote = json.getInt("downvote");
+            int groupId = json.getInt("gid");
             JSONArray tags = json.getJSONArray("tags");
 
             Set<String> tagsList = new HashSet<String>();
@@ -56,7 +55,7 @@ public class JSONParser {
                 tagsList.add(tag.getString("tag"));
             }
 
-            questionsList.add(new Question(questionID, questionText, null, owner, upVote, downVote, tagsList, -1));
+            questionsList.add(new Question(questionID, questionText, groupId, null, owner, upVote, downVote, tagsList));
         }
 
         return questionsList;
@@ -65,6 +64,7 @@ public class JSONParser {
     public static List<Answer> getAnswers(String jsonString) throws JSONException {
         JSONObject jsonObject = new JSONObject(jsonString);
         JSONArray jsonArray = jsonObject.getJSONArray("answers");
+
 
         List<Answer> answersList = new ArrayList<Answer>();
         for (int i = 0; i < jsonArray.length(); ++i) {
