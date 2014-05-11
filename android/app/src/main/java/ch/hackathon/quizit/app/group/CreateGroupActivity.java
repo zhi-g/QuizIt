@@ -29,10 +29,11 @@ import ch.hackathon.quizit.app.R;
 import ch.hackathon.quizit.app.utils.JSONBuilder;
 import ch.hackathon.quizit.app.utils.JSONParser;
 import ch.hackathon.quizit.app.question.QuestionsActivity;
+import ch.hackathon.quizit.app.utils.SharedPrefsManager;
 
 public class CreateGroupActivity extends ActionBarActivity {
     private static final String TAG = CreateGroupActivity.class.getCanonicalName();
-    private final static String REQUEST = "http://128.179.161.172:9000/group";
+    private final static String REQUEST = "http://128.179.167.151:9000/group";
     private EditText mNewGroupTextView;
     private Group mGroup;
 
@@ -133,6 +134,7 @@ public class CreateGroupActivity extends ActionBarActivity {
                 displayDialog();
             }
             if(mGroup != null) {
+                new SharedPrefsManager(CreateGroupActivity.this).setNewFirst(mGroup.getName());
                 Intent newIntent = new Intent(CreateGroupActivity.this, QuestionsActivity.class);
                 newIntent.putExtra("id", mGroup.getID());
                 newIntent.putExtra("Group name", mGroup.getName());

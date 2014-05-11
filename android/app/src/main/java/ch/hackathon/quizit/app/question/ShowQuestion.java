@@ -32,7 +32,7 @@ import ch.hackathon.quizit.app.utils.JSONParser;
 
 
 public class ShowQuestion extends ListActivity {
-    public static String SERVER_URL = "";
+    public static String SERVER_URL =  "http://128.179.161.172:9000/";
    private TextView text;
     private LinearLayout tags;
     private List<Answer> answers;
