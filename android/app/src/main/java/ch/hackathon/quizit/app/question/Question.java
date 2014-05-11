@@ -11,21 +11,23 @@ import android.os.Parcelable;
  * Created by studio on 10.05.2014.
  */
 public class Question implements Parcelable {
+    private long id;
     private String questionText;
     private List<String> answers;
-    private Set<String> tags;
+    private long owner;
     private int upvote;
     private int downvote;
-    private String owner;
-    private String groupId;
+    private Set<String> tags;
+    private long groupId;
 
-    public Question(String questionText, List<String> answers, Set<String> tags, int upvote, int downvote, String owner, String groupId){
+    public Question(long id, String questionText, List<String> answers, long owner, int upvote, int downvote, Set<String> tags, long groupId){
+        this.id = id;
         this.questionText = questionText;
         this.answers = new ArrayList<String>(answers);
-        this.tags = new TreeSet<String>(tags);
+        this.owner = owner;
         this.upvote = upvote;
         this.downvote = downvote;
-        this.owner = owner;
+        this.tags = new TreeSet<String>(tags);
         this.groupId = groupId;
     }
 
@@ -48,11 +50,11 @@ public class Question implements Parcelable {
         return upvote;
     }
 
-    public String getOwner() {
+    public long getOwner() {
         return owner;
     }
 
-    public String getGroupId() {
+    public long getGroupId() {
         return groupId;
     }
 
@@ -78,8 +80,8 @@ public class Question implements Parcelable {
         dest.writeStringList(new ArrayList<String>(tags));
         dest.writeInt(upvote);
         dest.writeInt(downvote);
-        dest.writeString(owner);
-        dest.writeString(groupId);
+        dest.writeLong(owner);
+        dest.writeLong(groupId);
     }
 
     /**
@@ -98,8 +100,8 @@ public class Question implements Parcelable {
         in.readInt();
         upvote = in.readInt();
         downvote = in.readInt();
-        owner = in.readString();
-        groupId = in.readString();
+        owner = in.readLong();
+        groupId = in.readLong();
     }
 
 

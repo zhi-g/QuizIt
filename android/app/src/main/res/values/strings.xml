@@ -12,7 +12,7 @@
     <string name="most_recent_groups">Most recent groups</string>
     <string name="title_activity_join_group">JoinGroupActivity</string>
     <string name="title_activity_create_group">CreateGroupActivity</string>
-    <string name="remove_group">x</string>
+    <string name="remove_group">\u2718</string>
     <string name="joined_groups">Joined groups</string>
     <string name="create_group_text">Create new group</string>
     <string name="create_group_hint">Enter new group name</string>

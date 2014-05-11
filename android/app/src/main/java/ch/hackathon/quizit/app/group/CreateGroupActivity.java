@@ -79,6 +79,7 @@ public class CreateGroupActivity extends ActionBarActivity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
+
             displayDialog();
         }
     }

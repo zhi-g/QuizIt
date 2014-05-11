@@ -8,10 +8,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.IOException;
@@ -19,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.hackathon.quizit.app.R;
-import ch.hackathon.quizit.app.group.CustomArrayAdapter;
 
 
 public class JoinGroupActivity extends ListActivity implements CustomArrayAdapter.CustomListAdapterObserver {
@@ -41,9 +42,12 @@ public class JoinGroupActivity extends ListActivity implements CustomArrayAdapte
 
         mGroupsList = new ArrayList<String>();
         mGroupsList.add("Group1");
+        mGroupsList.add("Group2");
         mArrayAdapter = new CustomArrayAdapter(this, mGroupsList, this);
 
         setListAdapter(mArrayAdapter);
+
+        new FetchGroupsAsyncTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
 
@@ -70,8 +74,12 @@ public class JoinGroupActivity extends ListActivity implements CustomArrayAdapte
 
     }
 
-    public void update() {
+    public void leaveGroup(View view) {
 
+    }
+
+    public void update() {
+        Log.d(TAG, "Request executed");
     }
 
     private class FetchGroupsAsyncTask extends AsyncTask<Void, Void, Void> {
@@ -81,10 +89,13 @@ public class JoinGroupActivity extends ListActivity implements CustomArrayAdapte
             HttpResponse response;
             String responseString = null;
             try {
-                HttpGet request = new HttpGet(URL + ":" + PORT + "/" + REQUEST);
+                HttpPost request = new HttpPost(URL + ":" + PORT + "/" + REQUEST);
+                StringEntity entity = new StringEntity("{ token : token }");
+                request.setEntity(entity);
                 response = httpclient.execute(request);
                 StatusLine statusLine = response.getStatusLine();
-
+                Log.d(TAG, "Http response status code: " + statusLine.getStatusCode());
+                Log.d(TAG, "Http response content: " + response.getEntity().getContent().toString());
             } catch (IOException e) {
                 e.printStackTrace();
             }

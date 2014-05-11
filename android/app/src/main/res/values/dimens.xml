@@ -14,4 +14,5 @@
     <dimen name="group_activity_margin">5dp</dimen>
 
     <dimen name="create_group_main_text_size">28dp</dimen>
+    <dimen name="delete_group_text_size">24dp</dimen>
 </resources>
