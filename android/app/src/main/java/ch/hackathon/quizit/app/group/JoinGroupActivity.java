@@ -1,10 +1,20 @@
 package ch.hackathon.quizit.app.group;
 
 import android.app.ListActivity;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.StatusLine;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +23,16 @@ import ch.hackathon.quizit.app.group.CustomArrayAdapter;
 
 
 public class JoinGroupActivity extends ListActivity implements CustomArrayAdapter.CustomListAdapterObserver {
+    private static final String TAG = JoinGroupActivity.class.getCanonicalName();
     private CustomArrayAdapter mArrayAdapter;
     private List<String> mGroupsList;
+    private final String URL = "http://128.179.161.172";
+    private final int PORT = 9000;
+    private final String REQUEST = "groups";
+
+    public interface ListActivityObserver {
+        public void update();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +66,34 @@ public class JoinGroupActivity extends ListActivity implements CustomArrayAdapte
         return super.onOptionsItemSelected(item);
     }
 
+    public void joinGroup(View view) {
+
+    }
+
     public void update() {
 
+    }
+
+    private class FetchGroupsAsyncTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            HttpClient httpclient = new DefaultHttpClient();
+            HttpResponse response;
+            String responseString = null;
+            try {
+                HttpGet request = new HttpGet(URL + ":" + PORT + "/" + REQUEST);
+                response = httpclient.execute(request);
+                StatusLine statusLine = response.getStatusLine();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            update();
+        }
     }
 }

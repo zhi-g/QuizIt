@@ -30,9 +30,11 @@ public class QuestionsActivity extends ListActivity {
         groupName = getIntent().getStringExtra("Group name");
         ((TextView)findViewById(R.id.group_name)).setText(groupName);
 
-        Question[] questions = new Question[] {new Question("Couihgjbv", new ArrayList<String>(),new TreeSet<String>(),0,0,"",""),new Question("dfh", new ArrayList<String>(),new TreeSet<String>(),0,0,"",""),new Question("Couidjfhvrghgjbv", new ArrayList<String>(),new TreeSet<String>(),0,0,"","")};
-        ArrayAdapter<String> mAdapter = new QuestionsAdapter(this, questions);
-        setListAdapter(mAdapter);
+        new GetQuestionsTask().execute();
+
+        //    Question[] questions = new Question[] {new Question("Couihgjbv", new ArrayList<String>(),new TreeSet<String>(),0,0,"",""),new Question("dfh", new ArrayList<String>(),new TreeSet<String>(),0,0,"",""),new Question("Couidjfhvrghgjbv", new ArrayList<String>(),new TreeSet<String>(),0,0,"","")};
+      //  ArrayAdapter<String> mAdapter = new QuestionsAdapter(this, questions);
+        //setListAdapter(mAdapter);
 
     }
 
@@ -46,9 +48,9 @@ public class QuestionsActivity extends ListActivity {
     @Override
     public void onListItemClick(ListView list, View view, int position, long id) {
         //TODO open a question activity
-        Intent myIntent = new Intent(this, ShowQuestion.class);
-        myIntent.putExtra("question", questions[position]);
-        startActivity(myIntent);
+    //    Intent myIntent = new Intent(this, ShowQuestion.class);
+      //  myIntent.putExtra("question", questions[position]);
+        //startActivity(myIntent);
     }
 
 
@@ -68,16 +70,24 @@ public class QuestionsActivity extends ListActivity {
 
      }
 
-    private void showQuestions() {
-
+    private void showQuestions(Question[] questions) {
+        ArrayAdapter<String> mAdapter = new QuestionsAdapter(this, questions);
+        setListAdapter(mAdapter);
     }
 
 
-    private  class GetQuestionsTask extends AsyncTask<Void, Void, String[]> {
+    private  class GetQuestionsTask extends AsyncTask<Void, Void, Question[]> {
 
         @Override
-        protected String[] doInBackground(Void ...unused){
+        protected Question[] doInBackground(Void ...unused){
+
             return null;
+        }
+
+
+        @Override
+        protected void onPostExecute(Question[] questions) {
+
         }
     }
 

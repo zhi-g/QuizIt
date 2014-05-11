@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import ch.hackathon.quizit.app.group.CreateGroupActivity;
 import ch.hackathon.quizit.app.group.JoinGroupActivity;
 import ch.hackathon.quizit.app.question.QuestionsActivity;
 
@@ -57,7 +58,8 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void searchGroup(View view) {
-
+        Intent newIntent = new Intent(this, CreateGroupActivity.class);
+        startActivity(newIntent);
     }
 
     public void mostRecentGroup1(View view) {
