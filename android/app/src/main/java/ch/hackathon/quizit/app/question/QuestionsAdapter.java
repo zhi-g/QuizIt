@@ -58,7 +58,7 @@ public class QuestionsAdapter extends ArrayAdapter<String> {
                 .findViewById(R.id.question_text);
 
         //TODO add upvote and downvote icons
-      //  upvote.setText(questions.get(position).getUpvote());
+        upvote.setText(questions.get(position).getUpvote() + "");
         upvote.setOnClickListener(new UpvoteButtonListener(position));
         downvote.setOnClickListener(new DownvoteButtonListener(position));
 
