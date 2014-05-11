@@ -49,7 +49,6 @@ object QuizzModel {
             "downvote" -> toJson(downvote)))
     }
 
-    // TODO: tag to say if was correct or not
     case class Answer(aid: Pk[Long] = NotAssigned, text: String,
         qid: Long, owner: Long, iscorrect: Boolean, upvote: Long = 0, downvote: Long = 0) {
         def json() = toJson(Map(
@@ -78,7 +77,7 @@ object QuizzModel {
             }
     }
 
-    val tagParser = get[String]("tags.name") map Tag
+    val tagParser = get[String]("tagname") map Tag
 
     val questionParser = {
         get[Pk[Long]]("questions.qid") ~
@@ -147,6 +146,17 @@ object QuizzModel {
                 """)
                 .on('id -> qid)
                 .as(tagParser *)
+    }
+
+    def answersForQuestion(qid: Long): Seq[Answer] = DB.withConnection {
+        implicit conn =>
+            SQL("""
+                    SELECT * 
+                    FROM answers
+                    WHERE qid = {id};
+                """)
+                .on('id -> qid)
+                .as(answerParser *)
     }
 
     /**
@@ -266,6 +276,22 @@ object QuizzModel {
                 qid
         }
 
+    def getTagSuggestions(prefix: String, maxnb: Long): Seq[Tag] =
+        DB.withConnection { implicit conn =>
+            SQL("""
+            		SELECT tagname, count(tagname) AS count  
+                    FROM question_tag 
+                    WHERE tagname like {prefix} 
+                    GROUP BY(tagname) 
+                    ORDER BY count DESC
+                    LIMIT {max};
+            """)
+                .on(
+                    'prefix -> ("%" + prefix + "%"),
+                    'maxnb -> maxnb)
+                .as(tagParser *)
+        }
+
     /**
      * @brief Adds a new answer to a question
      *
@@ -288,7 +314,7 @@ object QuizzModel {
 
     /**
      * @brief Adds a user to a group
-     * 
+     *
      * @return true on success
      */
     def addToGroup(user: User, gid: Long) = DB.withConnection {
@@ -303,10 +329,10 @@ object QuizzModel {
                     'gid -> gid)
                 .execute
     }
-    
+
     /**
      * @brief Removes a user from a group
-     * 
+     *
      * @return true on success
      */
     def removeFromGroup(user: User, gid: Long) = DB.withConnection {

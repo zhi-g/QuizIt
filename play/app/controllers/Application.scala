@@ -77,17 +77,30 @@ object Application extends Controller {
      *
      * @input { token : text , qid : int }
      *
-     * @output { questions :
+     * @output { answers :
      *                   [ aid : int ,
      *                     text : text ,
      *                     qid : int ,
      *                     owner : int ,
+     *                     iscorrect : bool ,
      *                     upvote : int ,
      *                     downvote : int ]* }
      *
      * @error { error : text }
      */
-    def getListOfAnswers = ???
+    def getListOfAnswers = Action { implicit request =>
+        val result = for (
+            json <- request.body.asJson;
+            token <- (json \ "token").asOpt[String];
+            qid <- (json \ "qid").asOpt[Long];
+            user <- authenticateUser(token)
+        ) yield {
+            val answers = answersForQuestion(qid)
+            Ok(toJson(Map("answers" -> toJson(questions.map(_.json)))))
+        }
+
+        result.getOrElse(jsonError("Something went wrong"))
+    }
 
     /**
      * @brief Insert new group
@@ -214,7 +227,23 @@ object Application extends Controller {
      *
      * @error { error : text }
      */
-    def autoCompleteTag = ???
+    def autoCompleteTag = Action {
+        implicit request =>
+            val result = for (
+                json <- request.body.asJson;
+                token <- (json \ "token").asOpt[String];
+                tag <- (json \ "tag").asOpt[String];
+                maxnb <- (json \ "maxnb").asOpt[Long];
+                user <- authenticateUser(token)
+            ) yield {
+                val tags = getTagSuggestions(tag, maxnb)
+                Ok(toJson(Map("tags" -> toJson(tags.map(_.json)))))
+            }
+
+            print(request)
+            println(request.body)
+            result.getOrElse(jsonError("Something went wrong"))
+    }
 
     /**
      * @brief Adds a user into a group
@@ -228,7 +257,7 @@ object Application extends Controller {
     def subscribeToGroup = Action {
         implicit request =>
             val result = for (
-                json <- request.body.asJson.orElse(request.body.asText.map(Json.parse));
+                json <- request.body.asJson;
                 token <- (json \ "token").asOpt[String];
                 gid <- (json \ "gid").asOpt[Long];
                 user <- authenticateUser(token)
@@ -256,7 +285,7 @@ object Application extends Controller {
     def unsubscribeFromGroup = Action {
         implicit request =>
             val result = for (
-                json <- request.body.asJson.orElse(request.body.asText.map(Json.parse));
+                json <- request.body.asJson;
                 token <- (json \ "token").asOpt[String];
                 gid <- (json \ "gid").asOpt[Long];
                 user <- authenticateUser(token)
