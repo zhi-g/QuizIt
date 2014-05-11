@@ -9,7 +9,11 @@ import models.QuizzModel._
 
 object Application extends Controller {
 
-    val error = Action { Ok(toJson(Map("error" -> "Simple Error Message"))) }
+    def jsonError(message: String) = BadRequest(toJson(Map("error" -> message)))
+
+    val ??? = Action { jsonError("Not Implemented") }
+
+    def authenticateUser(token: String) = userByToken(token)
 
     /**
      * @brief Gets a list of the groups a user belongs to
@@ -20,7 +24,19 @@ object Application extends Controller {
      *
      * @error { error : text }
      */
-    def getListOfGroups = error
+    def getListOfGroups = Action { implicit request =>
+        //TODO: handle errors better
+        val result = for (
+            json <- request.body.asJson;
+            token <- (json \ "token").asOpt[String];
+            user <- authenticateUser(token)
+        ) yield {
+            val groups = groupsFor(user)
+            Ok(toJson(Map("groups" -> toJson(groups.map(_.json)))))
+        }
+
+        result.getOrElse(jsonError("Something went wrong"))
+    }
 
     /**
      * @brief Gets list of questions for a group
@@ -38,7 +54,23 @@ object Application extends Controller {
      *
      * @error { error : text }
      */
-    def getListOfQuestions = error
+    def getListOfQuestions = Action { implicit request =>
+        val result = for (
+            json <- request.body.asJson;
+            token <- (json \ "token").asOpt[String];
+            gid <- (json \ "gid").asOpt[Long];
+            user <- authenticateUser(token)
+        ) yield {
+            val questions = questionsForGroup(gid)
+            Ok(toJson(Map("questions" ->
+                toJson(questions.map { question =>
+                    question.json(tagsForQuestion(question.qid.get))
+                }))))
+
+        }
+
+        result.getOrElse(jsonError("Something went wrong"))
+    }
 
     /**
      * @brief Gets list of answers for a question
@@ -55,7 +87,7 @@ object Application extends Controller {
      *
      * @error { error : text }
      */
-    def getListOfAnswers = error
+    def getListOfAnswers = ???
 
     /**
      * @brief Insert new group
@@ -66,7 +98,23 @@ object Application extends Controller {
      *
      * @error { error : text }
      */
-    def insertNewGroup = error
+    def insertNewGroup = Action { implicit request =>
+        val result = for (
+            json <- request.body.asJson;
+            token <- (json \ "token").asOpt[String];
+            groupname <- (json \ "name").asOpt[String];
+            user <- authenticateUser(token)
+        ) yield try {
+            val gid = newGroup(Group(name = groupname))
+            Ok(toJson(Map("gid" -> gid)))
+        } catch {
+            case e: Throwable => jsonError(e.getMessage())
+        }
+
+        println(request.body)
+        println(result)
+        result.getOrElse(jsonError("Something went wrong"))
+    }
 
     /**
      * @brief Insert new question for a group
@@ -77,7 +125,7 @@ object Application extends Controller {
      *
      * @error { error : text }
      */
-    def insertNewQuestion = error
+    def insertNewQuestion = ???
 
     /**
      * @brief Insert new answer for a question
@@ -88,7 +136,7 @@ object Application extends Controller {
      *
      * @error { error : text }
      */
-    def insertNewAnswer = error
+    def insertNewAnswer = ???
 
     /**
      * @brief Generate a quizz based on a certain tag
@@ -104,7 +152,7 @@ object Application extends Controller {
      *
      * @error { error : text }
      */
-    def generateQuizz = error
+    def generateQuizz = ???
 
     /**
      * @brief Proposes a list of tags for an incomplete tag
@@ -115,8 +163,12 @@ object Application extends Controller {
      *
      * @error { error : text }
      */
-    def autoCompleteTag = error
+    def autoCompleteTag = ???
 
+    
+    def subscribeToGroup = ???
+    def unsubscribeFromGroup = ???
+    
     def index = Action {
         Ok(views.html.index("Your new application is ready."))
     }
@@ -137,22 +189,27 @@ object Application extends Controller {
      */
     def addUser = Action { implicit request =>
         val result = for (
-            json <- request.body.asJson;
+            json <- request.body.asJson.orElse(request.body.asText.map(Json.parse));
             name <- (json \ "name").asOpt[String];
             token <- (json \ "login_token").asOpt[String]
         ) yield {
             val success = newUser(User(name = name, login_token = token))
-            Ok(toJson(success))
+            Ok("YEAH")
         }
 
-        result.getOrElse(BadRequest)
+        print(request)
+        println(request.body)
+        result.getOrElse(Ok(request.body.toString()))
+
     }
 
     /**
      *  Returns a json array of all the users in the database
      */
     def allUsers = Action {
-        Ok(toJson(users.map(_.json)))
+        Ok(toJson(Map(
+            "users" -> toJson(users.map(_.json)),
+            "groups" -> toJson(groups.map(_.json)))))
     }
 
 }

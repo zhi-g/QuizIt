@@ -82,7 +82,7 @@ object QuizzModel {
                     Question(id, text, group, owner, up, down)
             }
     }
-    
+
     val answerParser = {
         get[Pk[Long]]("answers.aid") ~
             get[String]("answers.text") ~
@@ -94,8 +94,50 @@ object QuizzModel {
                     Answer(id, text, question, owner, up, down)
             }
     }
-    
+
     /********** Data access functions **********/
+
+    /**
+     * @brief Get all groups a user belongs to
+     */
+    def groupsFor(user: User): Seq[Group] = DB.withConnection {
+        implicit conn =>
+            SQL("""
+                    SELECT * 
+            		FROM groups JOIN user_group
+            		WHERE uid = {id} AND user_group.gid = groups.gid;
+                """)
+                .on('id -> user.uid)
+                .as(groupParser *)
+    }
+
+    /**
+     * @brief Get all questions in a group
+     */
+    def questionsForGroup(gid: Long): Seq[Question] = DB.withConnection {
+        implicit conn =>
+            SQL("""
+                    SELECT * 
+            		FROM questions 
+            		WHERE gid = {id};
+                """)
+                .on('id -> gid)
+                .as(questionParser *)
+    }
+
+    /**
+     * @brief Get tags for a question
+     */
+    def tagsForQuestion(qid: Long): Seq[Tag] = DB.withConnection {
+        implicit conn =>
+            SQL("""
+                    SELECT tagname as tags.name
+            		FROM question_tag
+            		WHERE qid = {id};
+                """)
+                .on('id -> qid)
+                .as(tagParser *)
+    }
 
     /**
      * @brief All the users of the database
@@ -105,6 +147,89 @@ object QuizzModel {
     def users = DB.withConnection {
         implicit conn => SQL("SELECT * FROM users").as(userParser *)
     }
+    
+    /**
+     * @brief All the groups of the database
+     *
+     * @return A list of all the current groups
+     */
+    def groups = DB.withConnection {
+        implicit conn => SQL("SELECT * FROM groups").as(groupParser *)
+    }
+
+    /**
+     * @brief Adds a new user to the database
+     *
+     * @return true on success, false on failure
+     */
+    def newUser(user: User): Boolean = DB.withConnection {
+        implicit conn =>
+            SQL("""
+            		INSERT INTO users 
+            		(name, login_token) 
+            		VALUES( {name}, {login_token});
+                 """)
+                .on(
+                    'name -> user.name,
+                    'login_token -> user.login_token)
+                .executeUpdate() == 1
+    }
+
+    /**
+     * @brief Adds a new group to the database
+     *
+     * @return the gid of the newly formed group
+     */
+    def newGroup(group: Group): Long = DB.withConnection {
+        implicit conn =>
+            assert(SQL("""
+                    INSERT INTO groups 
+            		(name) 
+            		VALUES( {name} );
+                """)
+                .on(
+                    'name -> group.name)
+                .executeUpdate() == 1);
+
+            SQL("""
+                    SELECT * 
+            		FROM groups 
+            		WHERE name = {name};
+                """)
+                .on('name -> group.name)
+                .as(groupParser.single)
+                .gid.get
+    }
+
+    /**
+     * @brief Adds a new question to a group with its set of tags
+     *
+     * @return the qid of the newly created question
+     */
+    def newQuestion(user: User, gid: Long, question: Question, tags: Seq[Tag]): Long =
+        DB.withConnection {
+            implicit conn =>
+                assert(SQL("""
+                    INSERT INTO questions 
+            		(text, gid, owner ) 
+            		VALUES( {text}, {group}, {owner} );
+                """)
+                    .on(
+                        'text -> question.text,
+                        'group -> gid,
+                        'owner -> user.uid)
+                    .executeUpdate() == 1);
+                return 0;
+
+                /*SQL("""
+                    SELECT * 
+            		FROM questions 
+            		WHERE name = {name};
+                """)
+                    .on('name -> group.name)
+                    .as(groupParser.single)
+                    .gid.get*/
+        }
 
     /**
      * @brief Lookup a user by name
@@ -114,7 +239,7 @@ object QuizzModel {
      */
     def userByName(name: String) = DB.withConnection {
         implicit conn =>
-            SQL("SELECT * FROM users WHERE name = { name }")
+            SQL("SELECT * FROM users WHERE name = {name}")
                 .on('name -> name)
                 .as(userParser.singleOpt)
     }
@@ -125,37 +250,12 @@ object QuizzModel {
      * @return Some(user) if user with that login token exists or None
      * 			if no user with that name was found
      */
-    def userByToken(token: String) = DB.withConnection {
+    def userByToken(token: String): Option[User] = DB.withConnection {
         implicit conn =>
-            SQL("SELECT * FROM users WHERE login_token = { token }")
+            SQL("SELECT * FROM users " +
+                "WHERE login_token = {token}")
                 .on('token -> token)
                 .as(userParser.singleOpt)
-    }
-
-    /**
-     * @brief Adds a new user to the database
-     *
-     * @return true on success, false on failure
-     */
-    def newUser(user: User) = DB.withConnection {
-        implicit conn =>
-            SQL(""" 
-                    INSERT INTO users 
-                    (name, login_token)
-                    VALUES( {name}, {login_token} );
-                """).on(
-                'name -> user.name,
-                'login_token -> user.login_token).executeUpdate() == 1
-    }
-
-    /**
-     * @brief Get all groups a user belongs to
-     */
-    def groupsFor(user: User) = DB.withConnection {
-        implicit conn =>
-            SQL("SELECT users.uid, userd.name, users.login_token FROM users WHERE name = { name }")
-                .on('name -> user.name)
-                .as(userParser *)
     }
 
 }
