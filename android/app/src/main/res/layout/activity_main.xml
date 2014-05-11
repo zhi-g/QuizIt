@@ -6,7 +6,6 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    android:background="@color/black"
     tools:context="ch.hackathon.quizit.app.MainActivity">
 
     <LinearLayout
@@ -60,7 +59,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/group_activity_margin"
         android:text="@string/most_recent_groups"
-        android:textColor="@color/silver"
         android:textSize="@dimen/most_recent_groups_text_size"
         android:layout_below="@+id/create_new_group_button"/>
 
