@@ -10,22 +10,24 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ch.hackathon.quizit.app.R;
 
 /**
  * Created by studio on 10.05.2014.
  */
 public class QuestionsAdapter extends ArrayAdapter<String> {
-    Question[] questions;
+    List<Question> questions;
     Context  context;
 
 
 
-    public QuestionsAdapter(Context context, Question[] questions) {
+    public QuestionsAdapter(Context context, List<Question> questions) {
         super(context, R.layout.row_layout_questions,extractQuestionText(questions));
         this.questions = questions;
         this.context = context;
-
     }
 
     /**
@@ -33,11 +35,11 @@ public class QuestionsAdapter extends ArrayAdapter<String> {
      * @param questions
      * @return
      */
-    protected static String[] extractQuestionText(Question[] questions) {
-        String[] questionsText = new String [questions.length];
+    protected static List<String> extractQuestionText(List<Question> questions) {
+        List<String> questionsText = new ArrayList<String>(questions.size());
 
-        for(int i= 0; i<questions.length; ++i) {
-            questionsText[i] = questions[i].getQuestionText();
+        for(int i= 0; i<questions.size(); ++i) {
+            questionsText.add(questions.get(i).getQuestionText());
         }
       return questionsText;
     }
@@ -49,18 +51,19 @@ public class QuestionsAdapter extends ArrayAdapter<String> {
 
         View rowView = inflater.inflate(
                 R.layout.row_layout_questions, parent, false);
-        ImageButton upvote = (ImageButton) rowView.findViewById(R.id.button_upvote);
-        ImageButton downvote = (ImageButton) rowView
+        Button upvote = (Button) rowView.findViewById(R.id.button_upvote);
+        Button downvote = (Button) rowView
                 .findViewById(R.id.button_downvote);
         TextView questionText = (TextView) rowView
                 .findViewById(R.id.question_text);
 
         //TODO add upvote and downvote icons
-
+      //  upvote.setText(questions.get(position).getUpvote());
         upvote.setOnClickListener(new UpvoteButtonListener(position));
         downvote.setOnClickListener(new DownvoteButtonListener(position));
 
-       questionText.setText(questions[position].getQuestionText());
+        questionText.setText(questions.get(position).getQuestionText());
+        questionText.setOnClickListener(new QuestionTextListener(position));
 
       return rowView;
     }
@@ -75,7 +78,7 @@ public class QuestionsAdapter extends ArrayAdapter<String> {
 
          @Override
          public void onClick(View view) {
-            questions[position].upvote();
+            questions.get(position).upvote();
 
          }
       }
@@ -87,7 +90,8 @@ public class QuestionsAdapter extends ArrayAdapter<String> {
          }
          @Override
          public void onClick(View view) {
-                questions[position].downvote();
+                questions.get(position).downvote();
+             System.out.print("plop");
          }
     }
 
@@ -100,7 +104,7 @@ public class QuestionsAdapter extends ArrayAdapter<String> {
         @Override
         public void onClick(View view) {
             Intent myIntent = new Intent(context, ShowQuestion.class);
-             myIntent.putExtra("question", questions[position]);
+            myIntent.putExtra("question", questions.get(position));
             context.startActivity(myIntent);
         }
     }
