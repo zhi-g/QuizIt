@@ -27,8 +27,18 @@ public class Answer implements Parcelable {
         return id;
     }
 
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public String getAnswer() {
         return answer;
+    }
+
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 
     public int getUpvote() {
@@ -56,7 +66,19 @@ public class Answer implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i) {
+    public void writeToParcel(Parcel parcel, int i) {}
 
+    public void setUpvote(int upvote) {
+        this.upvote = upvote;
+    }
+
+
+
+    public void setDownvote(int downvote) {
+        this.downvote = downvote;
+    }
+
+    public void setOwner(long owner) {
+        this.owner = owner;
     }
 }

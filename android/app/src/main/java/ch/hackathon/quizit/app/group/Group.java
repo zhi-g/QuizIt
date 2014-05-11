@@ -19,4 +19,12 @@ public class Group {
     public long getID() {
         return id;
     }
+
+    public String getName() {
+        return mName;
+    }
+
+    public void setName(String mName) {
+        this.mName = mName;
+    }
 }
