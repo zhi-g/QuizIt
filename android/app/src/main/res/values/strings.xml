@@ -24,5 +24,6 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="create_new_group">Create a new group</string>
+    <string name="title_activity_add_question">AddQuestionActivity</string>
 
 </resources>

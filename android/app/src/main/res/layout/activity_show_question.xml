@@ -14,7 +14,39 @@
         android:layout_height="wrap_content"
         android:maxLines="4"
         android:scrollbars="vertical"
-        android:textSize="17sp" />
+        android:textSize="17sp"
+        android:background="@drawable/group__list_element"
+        />
+
+    <LinearLayout
+        android:id="@+id/button_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_question"
+    >
+        <Button
+            android:id="@+id/button_upvote"
+            android:background="@android:color/transparent"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:text = ""
+            android:gravity="right"
+            android:drawableTop="@drawable/up"
+            />
+
+        <Button
+            android:id="@+id/button_downvote"
+            android:background="@android:color/transparent"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:text = ""
+            android:layout_gravity="right"
+            android:drawableTop="@drawable/down"
+            />
+
+        </LinearLayout>
 
     <HorizontalScrollView
         android:id = "@+id/tags_view"
@@ -24,7 +56,7 @@
         android:overScrollMode="never"
         android:requiresFadingEdge="horizontal"
         android:scrollbars="none"
-        android:layout_below= "@+id/text_question">
+        android:layout_below= "@+id/button_layout">
 
         <LinearLayout
             android:id="@+id/list_tags"

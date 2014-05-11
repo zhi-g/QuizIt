@@ -79,6 +79,8 @@ public class Question implements Parcelable {
         return groupId;
     }
 
+    public long getId()  {return id;}
+
     public void upvote(){
         upvote++;
     }

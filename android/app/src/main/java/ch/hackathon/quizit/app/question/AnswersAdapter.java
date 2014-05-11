@@ -16,7 +16,7 @@ import ch.hackathon.quizit.app.R;
 /**
  * Created by studio on 11.05.2014.
  */
-public class AnswersAdapter extends ArrayAdapter<String> {
+public class AnswersAdapter extends ArrayAdapter<Answer> {
 
     List<Answer> answers;
     Context context;
@@ -24,7 +24,7 @@ public class AnswersAdapter extends ArrayAdapter<String> {
 
 
     public AnswersAdapter(Context context, List<Answer> answers) {
-        super(context, R.layout.row_layout_questions, extractAnswersText(answers));
+        super(context, R.layout.row_layout_questions, answers);
         this.answers = answers;
         this.context = context;
 
@@ -45,9 +45,9 @@ public class AnswersAdapter extends ArrayAdapter<String> {
 
         //TODO add upvote and downvote icons
 
-       // upvote.setText(answers.get(position).getUpvote());
+        upvote.setText(answers.get(position).getUpvote());
         upvote.setOnClickListener(new UpvoteButtonListener(position));
-      //  downvote.setText(answers.get(position).getDownvote());
+        downvote.setText(answers.get(position).getDownvote());
         downvote.setOnClickListener(new DownvoteButtonListener(position));
 
         answerText.setText(answers.get(position).getAnswer());

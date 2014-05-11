@@ -60,6 +60,7 @@ public class QuestionsAdapter extends ArrayAdapter<String> {
         //TODO add upvote and downvote icons
         upvote.setText(questions.get(position).getUpvote() + "");
         upvote.setOnClickListener(new UpvoteButtonListener(position));
+        downvote.setText(questions.get(position).getDownvote() + "");
         downvote.setOnClickListener(new DownvoteButtonListener(position));
 
         questionText.setText(questions.get(position).getQuestionText());
@@ -79,7 +80,7 @@ public class QuestionsAdapter extends ArrayAdapter<String> {
          @Override
          public void onClick(View view) {
             questions.get(position).upvote();
-
+             notifyDataSetChanged();
          }
       }
      private class DownvoteButtonListener implements  View.OnClickListener {
@@ -91,7 +92,7 @@ public class QuestionsAdapter extends ArrayAdapter<String> {
          @Override
          public void onClick(View view) {
                 questions.get(position).downvote();
-             System.out.print("plop");
+                 notifyDataSetChanged();
          }
     }
 

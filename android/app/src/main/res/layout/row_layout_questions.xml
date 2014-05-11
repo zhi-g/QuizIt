@@ -37,6 +37,5 @@
         android:clickable="true"
         android:text = ""
         android:drawableTop="@drawable/down"
-
         />
 </LinearLayout>

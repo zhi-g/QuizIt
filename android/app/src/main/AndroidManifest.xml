@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ch.hackathon.quizit.app" >
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -18,21 +19,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".question.ShowQuestion"
+            android:name="ch.hackathon.quizit.app.question.ShowQuestion"
             android:label="@string/title_activity_show_question" >
         </activity>
         <activity
-            android:name=".question.QuestionsActivity"
-            android:label="@string/title_activity_questions_activity">
+            android:name="ch.hackathon.quizit.app.question.QuestionsActivity"
+            android:label="@string/title_activity_questions_activity" >
         </activity>
         <activity
-            android:name=".group.JoinGroupActivity"
-            android:label="@string/title_activity_join_group">
+            android:name="ch.hackathon.quizit.app.group.JoinGroupActivity"
+            android:label="@string/title_activity_join_group" >
         </activity>
         <activity
-            android:name=".group.CreateGroupActivity"
-            android:label="@string/title_activity_create_group">
-         </activity>
+            android:name="ch.hackathon.quizit.app.group.CreateGroupActivity"
+            android:label="@string/title_activity_create_group" >
+        </activity>
+        <activity
+            android:name="ch.hackathon.quizit.app.question.AddQuestionActivity"
+            android:label="@string/title_activity_add_question" >
+        </activity>
     </application>
 
 </manifest>
