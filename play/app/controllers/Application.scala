@@ -165,8 +165,26 @@ object Application extends Controller {
      */
     def autoCompleteTag = ???
 
-    
+     /**
+     * @brief Adds a user into a group
+     *
+     * @input { token : text , gid : int}
+     *
+     * @output { success : true }
+     *
+     * @error { error : text }
+     */
     def subscribeToGroup = ???
+    
+    /**
+     * @brief Removes a user from a group
+     *
+     * @input { token : text , gid : int}
+     *
+     * @output { success : true }
+     *
+     * @error { error : text }
+     */
     def unsubscribeFromGroup = ???
     
     def index = Action {
