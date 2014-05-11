@@ -28,8 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.hackathon.quizit.app.R;
-import ch.hackathon.quizit.app.Utils.JSONBuilder;
-import ch.hackathon.quizit.app.Utils.JSONParser;
+import ch.hackathon.quizit.app.utils.JSONBuilder;
+import ch.hackathon.quizit.app.utils.JSONParser;
 import ch.hackathon.quizit.app.question.Question;
 import ch.hackathon.quizit.app.question.QuestionsActivity;
 import ch.hackathon.quizit.app.question.ShowQuestion;

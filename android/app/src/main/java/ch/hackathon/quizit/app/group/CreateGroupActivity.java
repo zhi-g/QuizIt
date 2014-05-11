@@ -26,8 +26,8 @@ import org.json.JSONException;
 import java.io.IOException;
 
 import ch.hackathon.quizit.app.R;
-import ch.hackathon.quizit.app.Utils.JSONBuilder;
-import ch.hackathon.quizit.app.Utils.JSONParser;
+import ch.hackathon.quizit.app.utils.JSONBuilder;
+import ch.hackathon.quizit.app.utils.JSONParser;
 import ch.hackathon.quizit.app.question.QuestionsActivity;
 
 public class CreateGroupActivity extends ActionBarActivity {

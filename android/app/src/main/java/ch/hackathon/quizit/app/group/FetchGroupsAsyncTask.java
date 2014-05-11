@@ -16,8 +16,8 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.util.List;
 
-import ch.hackathon.quizit.app.Utils.JSONBuilder;
-import ch.hackathon.quizit.app.Utils.JSONParser;
+import ch.hackathon.quizit.app.utils.JSONBuilder;
+import ch.hackathon.quizit.app.utils.JSONParser;
 
 /**
  * Created by mathieu on 11/05/14.
