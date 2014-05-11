@@ -13,8 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:maxLines="5"
-        android:hint = "Enter question's text"
+        android:layout_marginBottom="@dimen/group_activity_margin"
+        android:hint="@string/enter_question_text"
+        android:textColorHint="@color/silver"
         android:background="@drawable/group__list_element"/>
+
     <EditText
         android:id = "@+id/edit_text_tags"
         android:layout_width="match_parent"
@@ -22,41 +25,20 @@
         android:maxLines="2"
         android:layout_marginBottom="@dimen/group_activity_margin"
         android:layout_marginLeft="@dimen/group_activity_margin"
-        android:hint = "Enter question's tags"
-        android:layout_below="@+id/edit_text_question"
-        android:background="@drawable/group__list_element"/>
+        android:hint="@string/enter_question_tag"
+        android:textColorHint="@color/silver"
+        android:background="@drawable/group__list_element"
+        android:layout_below="@+id/edit_text_question"/>
 
-    <EditText
-        android:id = "@+id/right_answer"
+    <Button
+        android:id = "@+id/button_submit"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:hint = "Add correct answer"
-        android:maxLines="3"
+        android:layout_height="40dp"
+        android:text="@string/submit_question"
         android:layout_marginBottom="@dimen/group_activity_margin"
         android:layout_marginLeft="@dimen/group_activity_margin"
-        android:layout_below="@+id/edit_text_tags"
-        android:background="@drawable/right_answer_background"
-         />
-    <EditText
-        android:id = "@+id/wrong_answer"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:hint = "Add wrong answer"
-        android:layout_below="@+id/right_answer"
-        android:maxLines = "3"
-        android:layout_marginBottom="@dimen/group_activity_margin"
-        android:layout_marginLeft="@dimen/group_activity_margin"
-        android:background="@drawable/wrong_answer_background"
-        />
-       <Button
-           android:id = "@+id/button_submit"
-           android:layout_width="match_parent"
-           android:layout_height="40dp"
-           android:text = "Submit question"
-           android:layout_marginBottom="@dimen/group_activity_margin"
-           android:layout_marginLeft="@dimen/group_activity_margin"
-           android:background="@drawable/group__list_element"
-           android:onClick="submitButtonClicked"/>
-
+        android:background="@drawable/group__list_element"
+        android:onClick="submitButtonClicked"
+        android:layout_below="@+id/edit_text_tags"/>
 
 </RelativeLayout>

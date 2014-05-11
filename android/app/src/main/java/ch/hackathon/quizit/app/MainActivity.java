@@ -25,6 +25,9 @@ public class MainActivity extends ActionBarActivity implements FetchGroupsAsyncT
     private static final String GROUP_NAME_EXTRA = "Group name";
     public static final String SHARED_PREFS = "APP_SHARED_PREFS";
     public static final String GROUP_ACCESS = "GROUP_ACCESS";
+
+    public static final String SERVER_URL = "http://128.179.167.151:9000/";
+
     private List<Group> mGroupsList;
     private Button mGroupButton1;
     private Button mGroupButton2;

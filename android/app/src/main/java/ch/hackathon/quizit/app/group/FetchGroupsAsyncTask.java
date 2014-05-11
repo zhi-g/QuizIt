@@ -16,6 +16,7 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.util.List;
 
+import ch.hackathon.quizit.app.MainActivity;
 import ch.hackathon.quizit.app.utils.JSONBuilder;
 import ch.hackathon.quizit.app.utils.JSONParser;
 
@@ -24,9 +25,7 @@ import ch.hackathon.quizit.app.utils.JSONParser;
  */
 public class FetchGroupsAsyncTask extends AsyncTask<Void, Void, Void> {
     private final static String TAG = FetchGroupsAsyncTask.class.getCanonicalName();
-    private final static String URL = "http://128.179.167.151";
-    private final static int PORT = 9000;
-    private final static String REQUEST = "json";
+    private final static String REQUEST = "groups";
     private AsyncTaskListener mListener;
 
     private List<Group> mGroupsList;
@@ -45,7 +44,7 @@ public class FetchGroupsAsyncTask extends AsyncTask<Void, Void, Void> {
         HttpResponse response;
         String responseString = null;
         try {
-            HttpPost request = new HttpPost(URL + ":" + PORT + "/" + REQUEST);
+            HttpPost request = new HttpPost(MainActivity.SERVER_URL + REQUEST);
             JSONBuilder builder =  new JSONBuilder();
             request.addHeader("Content-type", "application/json");
 

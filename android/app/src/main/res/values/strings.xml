@@ -25,6 +25,8 @@
     <string name="no">No</string>
     <string name="create_new_group">Create a new group</string>
     <string name="title_activity_add_question">AddQuestionActivity</string>
-    <string name="enter_question_text">Enter the question text</string>
+    <string name="enter_question_text">Enter question\'s text</string>
+    <string name="enter_question_tag">Enter question\'s tags</string>
+    <string name="submit_question">Submit question</string>
 
 </resources>
