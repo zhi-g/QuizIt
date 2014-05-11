@@ -42,6 +42,14 @@ public class CustomArrayAdapter extends ArrayAdapter<String> {
         return rowView;
     }
 
+    public void addObserver(CustomListAdapterObserver observer) {
+        mObservers.add(observer);
+    }
+
+    public void removeObserver(CustomListAdapterObserver observer) {
+        mObservers.remove(observer);
+    }
+
     public void notifyObserver() {
         for(CustomListAdapterObserver observer: mObservers) {
             observer.update();

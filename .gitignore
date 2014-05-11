@@ -6,3 +6,4 @@ android/.idea/*
 android/app/app.iml
 .metadata/*
 .DS_Store
+*.swp

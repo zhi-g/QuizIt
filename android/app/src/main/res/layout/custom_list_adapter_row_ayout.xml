@@ -9,14 +9,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
+        android:onClick="leaveGroup"
         android:text="@string/remove_group"
+        android:textSize="@dimen/delete_group_text_size"
+        android:textColor="@color/red"
         />
 
     <Button
         android:id="@+id/button_join_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
+        android:background="@drawable/group__list_element"
         />
 
 </LinearLayout>

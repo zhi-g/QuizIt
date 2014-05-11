@@ -11,9 +11,14 @@
     <string name="find_group">Find group</string>
     <string name="most_recent_groups">Most recent groups</string>
     <string name="title_activity_join_group">JoinGroupActivity</string>
-    <string name="remove_group">x</string>
+    <string name="title_activity_create_group">CreateGroupActivity</string>
+    <string name="remove_group">\u2718</string>
     <string name="joined_groups">Joined groups</string>
     <string name="create_group_text">Create new group</string>
     <string name="create_group_hint">Enter new group name</string>
+    <string name="group_already_exists">This group already exists. Click Join to join the group.</string>
+    <string name="join">Join</string>
+    <string name="cancel">Cancel</string>
+    <string name="create_group_button_text">Create group</string>
 
 </resources>
