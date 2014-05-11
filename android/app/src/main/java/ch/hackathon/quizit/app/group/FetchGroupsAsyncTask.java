@@ -48,7 +48,7 @@ public class FetchGroupsAsyncTask extends AsyncTask<Void, Void, Void> {
             HttpPost request = new HttpPost(URL + ":" + PORT + "/" + REQUEST);
             JSONBuilder builder =  new JSONBuilder();
 
-            StringEntity entity = new StringEntity(builder.putGroupID(1).putName("Group1").build());
+            StringEntity entity = new StringEntity(builder.putToken("token").build());
             request.setEntity(entity);
             response = httpclient.execute(request);
             StatusLine statusLine = response.getStatusLine();
