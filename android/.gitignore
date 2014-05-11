@@ -1,2 +1,48 @@
-.idea/*
-android.iml
+# built application files
+*.apk
+*.ap_
+
+# files for the dex VM
+*.dex
+
+# Java class files
+*.class
+
+# JAR files
+*.jar
+
+# generated files
+bin/
+gen/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Eclipse project files
+.classpath
+.project
+
+# Intellij project files
+*.iml
+*.ipr
+*.iws
+.idea/
+.idea
+/.idea/workspace.xml
+
+# Intellij build folder
+build/
+
+# Gradle
+.gradle/
+gradle/
+.gradle
+/local.properties
+
+# Misc
+.DS_Store
+.metadata/
+.settings/
+
+# facebook build files
+/app/libs/facebook/build
