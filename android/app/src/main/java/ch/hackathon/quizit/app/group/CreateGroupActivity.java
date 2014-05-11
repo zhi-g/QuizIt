@@ -119,10 +119,10 @@ public class CreateGroupActivity extends ActionBarActivity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
+            mGroup = null;
             if(statusLine.getStatusCode() == HttpStatus.SC_OK) {
-                String stringResponse = null;
                 try {
-                    stringResponse = EntityUtils.toString(response.getEntity());
+                    String stringResponse = EntityUtils.toString(response.getEntity());
                     mGroup = new Group(JSONParser.getGroupID(stringResponse), groupName);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -134,6 +134,7 @@ public class CreateGroupActivity extends ActionBarActivity {
             }
             if(mGroup != null) {
                 Intent newIntent = new Intent(CreateGroupActivity.this, QuestionsActivity.class);
+                newIntent.putExtra("id", mGroup.getID());
                 newIntent.putExtra("Group name", mGroup.getName());
                 startActivity(newIntent);
             }

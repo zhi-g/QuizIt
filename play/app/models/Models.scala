@@ -30,7 +30,7 @@ object QuizzModel {
     }
 
     case class Question(qid: Pk[Long] = NotAssigned, text: String,
-        gid: Long, owner: Long, upvote: Long, downvote: Long) {
+        gid: Long, owner: Long, upvote: Long = 0, downvote: Long = 0) {
         def json(tags: Seq[Tag]) = toJson(Map(
             "qid" -> toJson(qid.get),
             "text" -> toJson(text),
@@ -39,16 +39,25 @@ object QuizzModel {
             "upvote" -> toJson(upvote),
             "downvote" -> toJson(downvote),
             "tags" -> toJson(tags.map(_.json))))
+
+        def json = toJson(Map(
+            "qid" -> toJson(qid.get),
+            "text" -> toJson(text),
+            "gid" -> toJson(gid),
+            "owner" -> toJson(owner),
+            "upvote" -> toJson(upvote),
+            "downvote" -> toJson(downvote)))
     }
 
     // TODO: tag to say if was correct or not
     case class Answer(aid: Pk[Long] = NotAssigned, text: String,
-        qid: Long, owner: Long, upvote: Long, downvote: Long) {
+        qid: Long, owner: Long, iscorrect: Boolean, upvote: Long = 0, downvote: Long = 0) {
         def json() = toJson(Map(
             "aid" -> toJson(aid.get),
             "text" -> toJson(text),
             "qid" -> toJson(qid),
             "owner" -> toJson(owner),
+            "iscorrect" -> toJson(iscorrect),
             "upvote" -> toJson(upvote),
             "downvote" -> toJson(downvote)))
     }
@@ -88,10 +97,11 @@ object QuizzModel {
             get[String]("answers.text") ~
             get[Long]("answers.question") ~
             get[Long]("answers.owner") ~
+            get[Boolean]("answers.iscorrect") ~
             get[Long]("answers.upvote") ~
             get[Long]("answers.downvote") map {
-                case id ~ text ~ question ~ owner ~ up ~ down =>
-                    Answer(id, text, question, owner, up, down)
+                case id ~ text ~ question ~ owner ~ iscorrect ~ up ~ down =>
+                    Answer(id, text, question, owner, iscorrect, up, down)
             }
     }
 
@@ -147,7 +157,7 @@ object QuizzModel {
     def users = DB.withConnection {
         implicit conn => SQL("SELECT * FROM users").as(userParser *)
     }
-    
+
     /**
      * @brief All the groups of the database
      *
@@ -155,6 +165,33 @@ object QuizzModel {
      */
     def groups = DB.withConnection {
         implicit conn => SQL("SELECT * FROM groups").as(groupParser *)
+    }
+
+    /**
+     * @brief All questions of the database
+     *
+     * @return A list of all the current questions
+     */
+    def questions = DB.withConnection {
+        implicit conn => SQL("SELECT * FROM questions").as(questionParser *)
+    }
+
+    /**
+     * @brief All the answers of the database
+     *
+     * @return A list of all the current answers
+     */
+    def answers = DB.withConnection {
+        implicit conn => SQL("SELECT * FROM answers").as(answerParser *)
+    }
+
+    /**
+     * @brief All the tags in the database
+     *
+     * @return A list of all the current tags
+     */
+    def tags = DB.withConnection {
+        implicit conn => SQL("SELECT DISTINCT tagname FROM question_tag").as(tagParser *)
     }
 
     /**
@@ -182,23 +219,14 @@ object QuizzModel {
      */
     def newGroup(group: Group): Long = DB.withConnection {
         implicit conn =>
-            assert(SQL("""
+            SQL("""
                     INSERT INTO groups 
             		(name) 
             		VALUES( {name} );
                 """)
                 .on(
                     'name -> group.name)
-                .executeUpdate() == 1);
-
-            SQL("""
-                    SELECT * 
-            		FROM groups 
-            		WHERE name = {name};
-                """)
-                .on('name -> group.name)
-                .as(groupParser.single)
-                .gid.get
+                .executeInsert(scalar[Long] single);
     }
 
     /**
@@ -206,30 +234,92 @@ object QuizzModel {
      *
      * @return the qid of the newly created question
      */
-    def newQuestion(user: User, gid: Long, question: Question, tags: Seq[Tag]): Long =
+    def newQuestion(question: Question, tags: Seq[Tag]): Long =
         DB.withConnection {
             implicit conn =>
-                assert(SQL("""
+
+                /* Insert question */
+                val qid = SQL("""
                     INSERT INTO questions 
             		(text, gid, owner ) 
             		VALUES( {text}, {group}, {owner} );
                 """)
                     .on(
                         'text -> question.text,
-                        'group -> gid,
-                        'owner -> user.uid)
-                    .executeUpdate() == 1);
-                return 0;
+                        'group -> question.gid,
+                        'owner -> question.owner)
+                    .executeInsert(scalar[Long] single)
 
-                /*SQL("""
-                    SELECT * 
-            		FROM questions 
-            		WHERE name = {name};
-                """)
-                    .on('name -> group.name)
-                    .as(groupParser.single)
-                    .gid.get*/
+                /* Add tags */
+                tags.foreach { tag =>
+                    SQL("""
+                            INSERT INTO question_tag 
+                            (tagname, question)
+                            VALUES ( {tag}, {qid} );
+                            """)
+                        .on(
+                            'tag -> tag,
+                            'qid -> qid)
+                        .executeUpdate()
+                }
+
+                qid
         }
+
+    /**
+     * @brief Adds a new answer to a question
+     *
+     * @return the aid of the newly created answer
+     */
+    def newAnswer(answer: Answer): Long =
+        DB.withConnection { implicit conn =>
+            SQL("""
+                    INSERT INTO answers 
+            		(text, question, owner, iscorrect ) 
+            		VALUES( {text}, {qid}, {owner}, {correct} );
+                """)
+                .on(
+                    'text -> answer.text,
+                    'qid -> answer.qid,
+                    'owner -> answer.owner,
+                    'correct -> answer.iscorrect)
+                .executeInsert(scalar[Long] single)
+        }
+
+    /**
+     * @brief Adds a user to a group
+     * 
+     * @return true on success
+     */
+    def addToGroup(user: User, gid: Long) = DB.withConnection {
+        implicit connection =>
+            SQL("""
+                    INSERT INTO user_group
+                    (uid, gid)
+                    VALUES ( {uid}, {gid} );
+                """)
+                .on(
+                    'uid -> user.uid,
+                    'gid -> gid)
+                .execute
+    }
+    
+    /**
+     * @brief Removes a user from a group
+     * 
+     * @return true on success
+     */
+    def removeFromGroup(user: User, gid: Long) = DB.withConnection {
+        implicit connection =>
+            SQL("""
+                    DELETE FROM user_group
+                    WHERE uid = {uid} and gid = {gid};
+                """)
+                .on(
+                    'uid -> user.uid,
+                    'gid -> gid)
+                .execute
+    }
 
     /**
      * @brief Lookup a user by name
