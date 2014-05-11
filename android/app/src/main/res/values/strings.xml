@@ -20,5 +20,9 @@
     <string name="join">Join</string>
     <string name="cancel">Cancel</string>
     <string name="create_group_button_text">Create group</string>
+    <string name="leave_group_dialog">Do you really want to leave group %1$s?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="create_new_group">Create a new group</string>
 
 </resources>

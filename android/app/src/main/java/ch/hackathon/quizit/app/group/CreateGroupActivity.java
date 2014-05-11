@@ -2,6 +2,7 @@ package ch.hackathon.quizit.app.group;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import ch.hackathon.quizit.app.R;
+import ch.hackathon.quizit.app.question.QuestionsActivity;
 
 public class CreateGroupActivity extends ActionBarActivity {
     private EditText mNewGroupTextView;
@@ -51,7 +53,8 @@ public class CreateGroupActivity extends ActionBarActivity {
         alertDialogBuilder.setPositiveButton(R.string.join, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int id) {
-                //TODO start the activity
+                Intent newIntent = new Intent(CreateGroupActivity.this, QuestionsActivity.class);
+                startActivity(newIntent);
             }
         });
 
@@ -79,7 +82,6 @@ public class CreateGroupActivity extends ActionBarActivity {
 
         @Override
         protected void onPostExecute(Void aVoid) {
-
             displayDialog();
         }
     }
