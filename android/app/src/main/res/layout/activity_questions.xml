@@ -17,7 +17,11 @@
         android:id = "@+id/group_name"
         android:layout_width="200dp"
         android:layout_weight="1"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:textSize="20dp"
+        android:textStyle="italic"
+        />
 
 
     <Button
@@ -30,7 +34,9 @@
         android:layout_alignTop="@android:id/list"
         android:layout_alignRight="@android:id/list"
         android:layout_alignEnd="@android:id/list"
-        android:layout_toRightOf="@+id/group_name"/>
+        android:layout_toRightOf="@+id/group_name"
+        android:background="@drawable/group__list_element"/>
+
 
     </LinearLayout>
     <!--Do not modify the list-->

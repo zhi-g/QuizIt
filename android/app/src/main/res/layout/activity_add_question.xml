@@ -11,14 +11,44 @@
     <EditText
         android:id = "@+id/edit_text_question"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxLines="4"
+        android:layout_height="200dp"
+        android:maxLines="5"
+        android:hint = "Enter question's text"
         android:background="@drawable/group__list_element"/>
     <EditText
+        android:id = "@+id/edit_text_tags"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:maxLines="1"
-        android:layout_below="@+id/edit_text_question"/>
+        android:layout_height="80dp"
+        android:maxLines="2"
+        android:hint = "Enter question's tags"
+        android:layout_below="@+id/edit_text_question"
+        android:background="@drawable/group__list_element"/>
+
+    <EditText
+        android:id = "@+id/right_answer"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:hint = "Add correct answer"
+        android:maxLines="3"
+        android:layout_below="@+id/edit_text_tags"
+        android:background="@drawable/right_answer_background"
+         />
+    <EditText
+        android:id = "@+id/wrong_answer"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:hint = "Add wrong answer"
+        android:layout_below="@+id/right_answer"
+        android:maxLines = "3"
+        android:background="@drawable/wrong_answer_background"
+        />
+       <Button
+           android:id = "@+id/button_submit"
+           android:layout_width="match_parent"
+           android:layout_height="40dp"
+           android:text = "Submit question"
+           android:background="@drawable/group__list_element"
+           android:onClick="submitButtonClicked"/>
 
 
 </RelativeLayout>
