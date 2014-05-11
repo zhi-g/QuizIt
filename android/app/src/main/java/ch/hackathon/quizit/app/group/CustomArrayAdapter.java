@@ -33,6 +33,7 @@ import ch.hackathon.quizit.app.utils.JSONParser;
 import ch.hackathon.quizit.app.question.Question;
 import ch.hackathon.quizit.app.question.QuestionsActivity;
 import ch.hackathon.quizit.app.question.ShowQuestion;
+import ch.hackathon.quizit.app.utils.SharedPrefsManager;
 
 /**
  * Created by mathieu on 10/05/14.
@@ -66,7 +67,9 @@ public class CustomArrayAdapter extends ArrayAdapter<Group> {
         groupName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                new SharedPrefsManager(mContext).setNewFirst(mGroupsList.get(position).getName());
                 Intent newIntent = new Intent(mContext, QuestionsActivity.class);
+                newIntent.putExtra("id", mGroupsList.get(position).getID());
                 newIntent.putExtra("Group name", mGroupsList.get(position).getName());
                 mContext.startActivity(newIntent);
             }
