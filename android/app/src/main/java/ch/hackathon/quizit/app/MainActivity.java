@@ -1,6 +1,7 @@
 package ch.hackathon.quizit.app;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -17,10 +18,13 @@ import ch.hackathon.quizit.app.group.FetchGroupsAsyncTask;
 import ch.hackathon.quizit.app.group.Group;
 import ch.hackathon.quizit.app.group.JoinGroupActivity;
 import ch.hackathon.quizit.app.question.QuestionsActivity;
+import ch.hackathon.quizit.app.utils.SharedPrefsManager;
 
 
 public class MainActivity extends ActionBarActivity implements FetchGroupsAsyncTask.AsyncTaskListener {
     private static final String GROUP_NAME_EXTRA = "Group name";
+    public static final String SHARED_PREFS = "APP_SHARED_PREFS";
+    public static final String GROUP_ACCESS = "GROUP_ACCESS";
     private List<Group> mGroupsList;
     private Button mGroupButton1;
     private Button mGroupButton2;
@@ -33,16 +37,36 @@ public class MainActivity extends ActionBarActivity implements FetchGroupsAsyncT
 
         mGroupsList = new ArrayList<Group>();
 
+        SharedPreferences sharedPrefs = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        String button1 = sharedPrefs.getString(GROUP_ACCESS + 0, "Group1");
+        String button2 = sharedPrefs.getString(GROUP_ACCESS + 1, "Group2");
+        String button3 = sharedPrefs.getString(GROUP_ACCESS + 2, "Group3");
+
         mGroupButton1 = (Button) findViewById(R.id.most_recent_group_button_1);
-        mGroupButton1.setText("Group1");
+        mGroupButton1.setText(button1);
         mGroupButton2 = (Button) findViewById(R.id.most_recent_group_button_2);
-        mGroupButton2.setText("Group2");
+        mGroupButton2.setText(button2);
         mGroupButton3 = (Button) findViewById(R.id.most_recent_group_button_3);
-        mGroupButton3.setText("Group3");
+        mGroupButton3.setText(button3);
 
         new FetchGroupsAsyncTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        SharedPreferences sharedPrefs = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        String button1 = sharedPrefs.getString(GROUP_ACCESS + 0, "Group1");
+        String button2 = sharedPrefs.getString(GROUP_ACCESS + 1, "Group2");
+        String button3 = sharedPrefs.getString(GROUP_ACCESS + 2, "Group3");
+
+        mGroupButton1 = (Button) findViewById(R.id.most_recent_group_button_1);
+        mGroupButton1.setText(button1);
+        mGroupButton2 = (Button) findViewById(R.id.most_recent_group_button_2);
+        mGroupButton2.setText(button2);
+        mGroupButton3 = (Button) findViewById(R.id.most_recent_group_button_3);
+        mGroupButton3.setText(button3);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -92,6 +116,8 @@ public class MainActivity extends ActionBarActivity implements FetchGroupsAsyncT
     }
 
     public void mostRecentGroup2(View view) {
+        new SharedPrefsManager(this).setNewLast(1);
+
         String groupName = mGroupButton2.getText().toString();
         Intent newIntent = new Intent(this, QuestionsActivity.class);
         newIntent.putExtra(GROUP_NAME_EXTRA, groupName);
@@ -99,6 +125,8 @@ public class MainActivity extends ActionBarActivity implements FetchGroupsAsyncT
     }
 
     public void mostRecentGroup3(View view) {
+        new SharedPrefsManager(this).setNewLast(2);
+
         String groupName = mGroupButton3.getText().toString();
         Intent newIntent = new Intent(this, QuestionsActivity.class);
         newIntent.putExtra(GROUP_NAME_EXTRA, groupName);

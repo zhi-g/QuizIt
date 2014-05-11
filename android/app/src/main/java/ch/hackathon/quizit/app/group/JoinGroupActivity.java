@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +28,7 @@ public class JoinGroupActivity extends ListActivity implements CustomArrayAdapte
         mGroupsList = new ArrayList<Group>();
         mGroupsList.add(new Group(1, "Group1"));
         mGroupsList.add(new Group(2, "Group2"));
+        mGroupsList.add(new Group(3, "Group3"));
 
         mArrayAdapter = new CustomArrayAdapter(this, mGroupsList, this);
 
@@ -55,10 +55,6 @@ public class JoinGroupActivity extends ListActivity implements CustomArrayAdapte
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public void joinGroup(View view) {
-
     }
 
     public void update() {
