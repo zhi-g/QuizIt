@@ -1,15 +1,12 @@
 package controllers
 
-import play.api._
 import play.api.mvc._
 import play.api.libs.json._
-import play.api.libs.json.Json._
-import play.api.Play.current
 import models.QuizzModel._
 
 object Application extends Controller {
 
-    def jsonError(message: String) = BadRequest(toJson(Map("error" -> message)))
+    def jsonError(message: String) = BadRequest(Json.obj("error" -> JsString(message)))
 
     val ??? = Action { jsonError("Not Implemented") }
 
@@ -32,7 +29,7 @@ object Application extends Controller {
             user <- authenticateUser(token)
         ) yield {
             val groups = groupsFor(user)
-            Ok(toJson(Map("groups" -> toJson(groups.map(_.json)))))
+            Ok(Json.obj("groups" -> JsArray(groups.map(_.json))))
         }
 
         result.getOrElse(jsonError("Something went wrong"))
@@ -62,10 +59,10 @@ object Application extends Controller {
             user <- authenticateUser(token)
         ) yield {
             val questions = questionsForGroup(gid)
-            Ok(toJson(Map("questions" ->
-                toJson(questions.map { question =>
+            Ok(Json.obj("questions" ->
+                JsArray(questions.map { question =>
                     question.json(tagsForQuestion(question.qid.get))
-                }))))
+                })))
 
         }
 
@@ -96,7 +93,7 @@ object Application extends Controller {
             user <- authenticateUser(token)
         ) yield {
             val answers = answersForQuestion(qid)
-            Ok(toJson(Map("answers" -> toJson(questions.map(_.json)))))
+            Ok(Json.obj("answers" -> JsArray(questions.map(_.json))))
         }
 
         result.getOrElse(jsonError("Something went wrong"))
@@ -119,7 +116,7 @@ object Application extends Controller {
             user <- authenticateUser(token)
         ) yield try {
             val gid = newGroup(Group(name = groupname))
-            Ok(toJson(Map("gid" -> gid)))
+            Ok(Json.obj("gid" -> gid))
         } catch {
             case e: Throwable =>
                 e.printStackTrace()
@@ -154,7 +151,7 @@ object Application extends Controller {
             } else {
                 val question = Question(text = text, gid = gid, owner = user.uid.get)
                 val qid: Long = newQuestion(question, tags.map(Tag.apply))
-                Ok(toJson(Map("qid" -> qid)))
+                Ok(Json.obj("qid" -> qid))
             }
         } catch {
             case e: Throwable =>
@@ -189,7 +186,7 @@ object Application extends Controller {
                 owner = user.uid.get, iscorrect = iscorrect)
 
             val aid: Long = newAnswer(answer)
-            Ok(toJson(Map("aid" -> aid)))
+            Ok(Json.obj("aid" -> aid))
 
         } catch {
             case e: Throwable =>
@@ -237,7 +234,8 @@ object Application extends Controller {
                 user <- authenticateUser(token)
             ) yield {
                 val tags = getTagSuggestions(tag, maxnb)
-                Ok(toJson(Map("tags" -> toJson(tags.map(_.json)))))
+                val jsonTags = JsArray(tags.map(_.json))
+                Ok(Json.obj("tags" -> jsonTags))
             }
 
             print(request)
@@ -263,7 +261,7 @@ object Application extends Controller {
                 user <- authenticateUser(token)
             ) yield {
                 if (addToGroup(user, gid))
-                    Ok(toJson(Map("success" -> true)))
+                    Ok(Json.obj("success" -> true))
                 else
                     jsonError("Not able to suscribe user to group")
             }
@@ -291,7 +289,7 @@ object Application extends Controller {
                 user <- authenticateUser(token)
             ) yield {
                 if (removeFromGroup(user, gid))
-                    Ok(toJson(Map("success" -> true)))
+                    Ok(Json.obj("success" -> true))
                 else
                     jsonError("Not able to suscribe user to group")
             }
@@ -339,12 +337,12 @@ object Application extends Controller {
      *  Returns a json array of all the users in the database
      */
     def allUsers = Action {
-        Ok(Json.stringify(toJson(Map(
-            "users" -> toJson(users.map(_.json)),
-            "groups" -> toJson(groups.map(_.json)),
-            "questions" -> toJson(questions.map(_.json)),
-            "answers" -> toJson(answers.map(_.json)),
-            "tags" -> toJson(tags.map(_.json))))))
+        Ok(Json.prettyPrint(Json.obj(
+            "users" -> JsArray(users.map(_.json)),
+            "groups" -> JsArray(groups.map(_.json)),
+            "questions" -> JsArray(questions.map(_.json)),
+            "answers" -> JsArray(answers.map(_.json)),
+            "tags" -> JsArray(tags.map(_.json)))))
     }
 
 }

@@ -4,8 +4,8 @@ import play.api._
 import play.api.mvc._
 import play.api.libs.json._
 import play.api.libs.json.Json._
-import play.api.db._
 import play.api.Play.current
+import play.api.db._
 
 import anorm._
 import anorm.SqlParser._
@@ -276,6 +276,9 @@ object QuizzModel {
                 qid
         }
 
+    /**
+     * //TODO
+     */
     def getTagSuggestions(prefix: String, maxnb: Long): Seq[Tag] =
         DB.withConnection { implicit conn =>
             SQL("""
