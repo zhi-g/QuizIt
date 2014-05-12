@@ -33,4 +33,14 @@
             <item name="android:textColor">@color/silver</item>
             <!-- The textColor property is backward compatible with the Support Library -->
         </style>
+
+        <style name="MyEditTextStyle"
+            parent="android:Theme">
+            <item name="android:editTextStyle">@style/editTextStyle</item>
+        </style>
+
+        <style name="editTextStyle"
+            parent="android:Widget.EditText">
+            <item name="android:textColorHint">@color/silver</item>
+            </style>
 </resources>
